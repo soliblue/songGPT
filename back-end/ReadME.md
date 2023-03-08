@@ -1,10 +1,15 @@
 # songGPT - Back-end
 
-The following is how to setup a simple backend serivce using songGPT. At the end you will have
+The following is how to setup a simple backend serivce using songGPT. Prerequistes to follwing along are a firebase project and
+a OpenAPI account.
 
 ## Setup
 
-1. Navigate to the `back-end` directoy
+1. Setup OpenAPI keys
+
+2. Create `firebase.json` in the app directory.
+
+3. Navigate to the `back-end` directoy
 
 ```bash
 cd back-end
