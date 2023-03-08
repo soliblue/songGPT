@@ -2,24 +2,41 @@
   "name": "songgpt",
   "version": "1.0.0",
   "main": "node_modules/expo/AppEntry.js",
+  "keywords": [
+    "react",
+    "expo",
+    "template",
+    "nativebase"
+  ],
+  "license": "MIT",
   "scripts": {
     "start": "expo start",
     "android": "expo start --android",
     "ios": "expo start --ios",
-    "web": "expo start --web"
+    "web": "expo start --web",
+    "eject": "expo eject"
   },
   "dependencies": {
-    "@expo/webpack-config": "^18.0.1",
     "@react-navigation/native": "^6.1.6",
-    "expo": "~48.0.5",
-    "expo-status-bar": "~1.4.4",
-    "native-base": "^3.4.28",
-    "react": "18.2.0",
-    "react-native": "0.71.3",
-    "react-native-web": "~0.18.10"
+    "@react-navigation/stack": "^6.3.16",
+    "expo": "^44.0.0",
+    "expo-status-bar": "~1.2.0",
+    "native-base": "3.4.0",
+    "react": "17.0.1",
+    "react-dom": "17.0.1",
+    "react-native": "0.64.3",
+    "react-native-safe-area-context": "3.3.2",
+    "react-native-screens": "~3.10.1",
+    "react-native-svg": "12.1.1",
+    "react-native-web": "0.17.1"
   },
   "devDependencies": {
-    "@babel/core": "^7.20.0"
+    "@babel/core": "^7.12.9"
   },
+  "bugs": {
+    "url": "https://github.com/GeekyAnts/nativebase-templates/issues"
+  },
+  "homepage": "https://github.com/GeekyAnts/nativebase-templates#readme",
+  "author": "Aditya Jamuar",
   "private": true
 }

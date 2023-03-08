@@ -1,11 +1,15 @@
-import { StatusBar } from "expo-status-bar";
-import { StyleSheet, Text, View } from "react-native";
+import React from "react";
+import { Navigation } from "./src/navigation/navigation";
+import { extendTheme, NativeBaseProvider } from "native-base";
+// internal
+import { themeConfig } from "./src/theme/theme.config";
 
 export default function App() {
+  const theme = extendTheme(themeConfig());
+
   return (
-    <View>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
+    <NativeBaseProvider theme={theme}>
+      <Navigation />
+    </NativeBaseProvider>
   );
 }
