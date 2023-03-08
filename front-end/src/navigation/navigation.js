@@ -1,7 +1,8 @@
 import * as React from "react";
-import { HomeScreen } from "../screens/home.screen";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
+import { SongCreateScreen } from "../screens/song-create.screen";
+import { SongDetailScreen } from "../screens/song-detail.screen";
 
 const Stack = createStackNavigator();
 
@@ -16,7 +17,8 @@ export const Navigation = () => (
         headerShown: false,
       }}
     >
-      <Stack.Screen name="Home" component={HomeScreen} />
+      <Stack.Screen name="SongCreate" component={SongCreateScreen} />
+      <Stack.Screen name="SongDetail" component={SongDetailScreen} />
     </Stack.Navigator>
   </NavigationContainer>
 );

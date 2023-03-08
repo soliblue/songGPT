@@ -5,9 +5,13 @@ a OpenAPI account.
 
 ## Setup
 
-1. Setup OpenAPI keys
+1.  Add your keys, tokens, or other sensitive information to the `.env` file in the root folder. You need to add the `OPENAI_ORGANIZATION`and `OPENAI_API_KEY`
 
-2. Create `firebase.json` in the app directory.
+```env
+OPENAI_ORGANIZATION=<INSERT YOUR OPENAI ORGANIZATION ID>
+OPENAI_API_KEY=<INSERT YOUR OPENAI API KEY>
+
+2. Create `app/firebase.json` with the firebase serive account.
 
 3. Navigate to the `back-end` directoy
 
@@ -34,8 +38,6 @@ uvicorn app.main:app --workers 1 --host 0.0.0.0 --port 8080 --reload
 ```
 
 At this point the fastapi app should be runing on http://0.0.0.0:8080/ 🎉
-
-An even quicker setup `cd back-end && docker-compos up` for those of you who have docker installed 😉
 
 ## Usage
 

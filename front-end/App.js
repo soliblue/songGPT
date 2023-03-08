@@ -9,11 +9,17 @@ import { FirebaseContextProvider } from "./src/services/firebase.context";
 
 const queryClient = new QueryClient();
 
+const config = {
+  dependencies: {
+    "linear-gradient": require("expo-linear-gradient").LinearGradient,
+  },
+};
+
 export default function App() {
   const theme = extendTheme(themeConfig());
   return (
     <QueryClientProvider client={queryClient}>
-      <NativeBaseProvider theme={theme}>
+      <NativeBaseProvider theme={theme} config={config}>
         <FirebaseContextProvider>
           <AxiosContextProvider>
             <Navigation />
