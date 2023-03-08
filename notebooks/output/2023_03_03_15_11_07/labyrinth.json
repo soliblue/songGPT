@@ -1,0 +1,18 @@
+{
+    "tempo": 120,
+    "time_signature": "4/4",
+    "tracks": [
+        {
+            "name": "Grand Piano",
+            "notes": "E5-0.5, F#5-0.5, G5-0.5, A5-0.5, G5-1.0,..."
+        },
+        {
+            "name": "Bass",
+            "notes": "E2-1.0, A2-1.0, E2-1.0, B2-1.0, E2-1.0,..."
+        },
+        {
+            "name": "Drums",
+            "notes": "B2-0.25, B2-0.25, B2-0.25, B2-0.25,..."
+        }
+    ]
+}
