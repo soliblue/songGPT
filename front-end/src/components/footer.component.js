@@ -4,22 +4,27 @@ import { HStack, Text, Pressable } from "native-base";
 
 export const Footer = () => (
   <HStack py={3} bg="gray.50" justifyContent={"center"}>
-    <Text color="black" fontWeight={"semibold"} letterSpacing="lg">
+    <Text
+      fontSize={"2xs"}
+      color="black"
+      fontWeight={"semibold"}
+      letterSpacing="lg"
+    >
       Made with ❤️ by{" "}
-      <Pressable
-        onPress={() => {
-          Linking.openURL("https://twitter.com/SoliMouse");
-        }}
-      >
-        <Text>Soli</Text>
-      </Pressable>
-      ,
       <Pressable
         onPress={() => {
           Linking.openURL("https://twitter.com/Tanovski");
         }}
       >
-        <Text> Jeffry </Text>
+        <Text>Jeffry</Text>
+      </Pressable>
+      ,
+      <Pressable
+        onPress={() => {
+          Linking.openURL("https://twitter.com/SoliMouse");
+        }}
+      >
+        <Text> Soli </Text>
       </Pressable>
       &
       <Pressable

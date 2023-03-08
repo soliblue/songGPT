@@ -18,7 +18,7 @@ export const FirebaseContextProvider = ({ children }) => {
   const app = initializeApp(firebaseConfig);
   const firestore = getFirestore(app);
   const storage = getStorage(app);
-  console.debug("🔥 Auth + Firestore + Storage");
+  console.debug("🔥  Firestore + Storage");
 
   return (
     <FirebaseContext.Provider

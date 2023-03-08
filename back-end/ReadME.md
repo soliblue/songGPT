@@ -46,3 +46,17 @@ You can open http://0.0.0.0:8080/docs/ on your browser and play around.
 ## Contributing
 
 We welcome contributions to the project! Please see the CONTRIBUTING.md file at the root of the project for more information.
+
+
+gcloud run deploy songGPT \
+        --cpu=1 \
+        --source=. \
+        --memory=512M \
+        --ingress=all \
+        --concurrency=80 \
+        --min-instances=1 \
+        --platform=managed \
+        --max-instances=50 \
+        --region=europe-west4 \
+        --set-env-vars $(cat ../.env | tr '\n' ',') \
+        --service-account=firebase-adminsdk-bzpy8@songgpt-xyz.iam.gserviceaccount.com
