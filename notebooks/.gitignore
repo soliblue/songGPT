@@ -1,0 +1,4 @@
+output/*
+env/*
+checkpoints/*
+*.sf2
