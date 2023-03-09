@@ -24,7 +24,7 @@ export const Header = () => (
         _text={{ color: "white" }}
         leftIcon={<Icon color="white" as={Ionicons} name="logo-github" />}
       >
-        Star on Github
+        Star on GitHub
       </Button>
     </HStack>
   </HStack>

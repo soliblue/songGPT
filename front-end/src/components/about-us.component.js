@@ -41,9 +41,8 @@ export const AboutUs = () => {
             fontWeight={"normal"}
           >
             SongGPT is an experimental open-source project that explores the
-            potential of Language Models, in generating original and
-            customizable musical compositions. You can read more about it on our
-            GitHub page.
+            potential of Language Models in generating original and customizable
+            musical compositions. You can read more about it on our GitHub page.
           </Text>
         </Popover.Body>
       </Popover.Content>
