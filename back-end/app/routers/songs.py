@@ -7,8 +7,6 @@ from app.songGPT.converters.Json2Midi import Json2Midi
 from app.songGPT.converters.Midi2Wav import Midi2Wav
 from app.songGPT.generators.ChatGPT import ChatGPT
 from app.songGPT.JsonAudio import JsonAudio
-
-JsonAudio
 from fastapi import APIRouter, status
 
 router = APIRouter()
