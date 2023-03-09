@@ -1,9 +1,8 @@
 import React from "react";
 import { Platform } from "react-native";
 import ReactMarkdown from "react-markdown";
-import { Ionicons } from "@expo/vector-icons";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
-import { Heading, Text, HStack, Icon, Toast, Link } from "native-base";
+import { Heading, Text, Link } from "native-base";
 import { materialOceanic } from "react-syntax-highlighter/dist/cjs/styles/prism";
 
 const CodeBlock = ({ className, children }) => {

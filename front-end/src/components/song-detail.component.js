@@ -42,13 +42,17 @@ export const SongDetail = ({ song }) => {
             },
           }}
         >
-          <Text maxWidth={"100%"}>
+          <Text
+            p={2}
+            borderRadius="md"
+            maxWidth={"100%"}
+            bg="rgba(255,255,255,0.5)"
+          >
             <Text bold>Input: </Text>
             {song?.prompt}
           </Text>
-          <ScrollView height={200} borderRadius="md">
-            <AboutJson mb={-5} />
-
+          <ScrollView height={200} borderRadius="md" bg="#263238" p={3}>
+            <AboutJson />
             <Markdown
               text={
                 "```json\n" + JSON.stringify(song?.score, null, 2) + "\n````"
