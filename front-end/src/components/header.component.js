@@ -1,7 +1,7 @@
 import React from "react";
 import { Linking } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
-import { HStack, Text, Button, Icon } from "native-base";
+import { HStack, Button, Icon } from "native-base";
 import { Logo } from "./logo.component";
 
 export const Header = () => (
