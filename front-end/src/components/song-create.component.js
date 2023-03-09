@@ -63,7 +63,7 @@ export const SongCreate = () => {
               }
               InputRightElement={<AboutUs />}
             />
-            <FormControl.HelperText alignSelf={"center"} maxWidth={400}>
+            <FormControl.HelperText alignSelf={"center"} maxWidth={400} mx={5}>
               Paste your favorite quote or poem and let our language model
               generate a beautiful and original piece of music for you. Please
               note, that right now we are only limited to using the Piano.
