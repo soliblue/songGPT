@@ -2,6 +2,7 @@ import React from "react";
 import { Linking } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { HStack, Text, Button, Icon } from "native-base";
+import { Logo } from "./logo.component";
 
 export const Header = () => (
   <HStack p={5} bg="gray.50" justifyContent={"center"}>
@@ -11,9 +12,8 @@ export const Header = () => (
       justifyContent="space-between"
       alignItems="center"
     >
-      <Text fontWeight={"bold"} fontSize="lg">
-        SongGPT.xyz
-      </Text>
+      <Logo />
+
       <Button
         bg="#316dca"
         variant="unstyled"
