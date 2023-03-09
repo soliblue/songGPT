@@ -3,6 +3,9 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import { SongCreateScreen } from "../screens/song-create.screen";
 import { SongDetailScreen } from "../screens/song-detail.screen";
+import { appRoutesConfig } from "./route.config";
+import { Platform } from "react-native";
+import * as Linking from "expo-linking";
 
 const Stack = createStackNavigator();
 
@@ -11,6 +14,15 @@ export const Navigation = () => (
     documentTitle={{
       enabled: false,
     }}
+    linking={
+      Platform.OS === "web"
+        ? {
+            enabled: true,
+            config: appRoutesConfig,
+            prefixes: [Linking.createURL("/"), "https://songGPT.xyz/"],
+          }
+        : undefined
+    }
   >
     <Stack.Navigator
       screenOptions={{
