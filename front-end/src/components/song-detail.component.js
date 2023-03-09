@@ -2,15 +2,11 @@ import React from "react";
 import { HStack, ScrollView, Text, VStack } from "native-base";
 import ReactAudioPlayer from "react-audio-player";
 // internal
-import { useSong } from "../hooks/useSong";
 import { Markdown } from "../components/markdown.component";
 import { AboutJson } from "../components/about-json.component";
 
-export const SongDetail = ({
-  songID = "db23c93a-82c9-47f5-bc9a-ee5a3f878d70",
-}) => {
-  const song = useSong(songID);
-  const filePath = `https://firebasestorage.googleapis.com/v0/b/songgpt-xyz.appspot.com/o/songs%2F${songID}%2F${songID}.wav?alt=media`;
+export const SongDetail = ({ song }) => {
+  const filePath = `https://firebasestorage.googleapis.com/v0/b/songgpt-xyz.appspot.com/o/songs%2F${song?.id}%2F${song?.id}.wav?alt=media`;
   const getRandomColor = (number) => {
     const colors = [
       "#F9D71C",
@@ -48,16 +44,14 @@ export const SongDetail = ({
         >
           <Text maxWidth={"100%"}>
             <Text bold>Input: </Text>
-            {song?.data?.prompt}
+            {song?.prompt}
           </Text>
           <ScrollView height={200} borderRadius="md">
             <AboutJson mb={-5} />
 
             <Markdown
               text={
-                "```json\n" +
-                JSON.stringify(song?.data?.score, null, 2) +
-                "\n````"
+                "```json\n" + JSON.stringify(song?.score, null, 2) + "\n````"
               }
             />
           </ScrollView>
