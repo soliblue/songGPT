@@ -24,6 +24,7 @@ export const AboutJson = ({ ...props }) => {
         </Popover.Header>
         <Popover.Body key="body">
           <Text
+            mx={5}
             maxWidth={500}
             color="gray.700"
             alignSelf="center"
