@@ -18,8 +18,6 @@ JSON2MIDI_CONVERTER = Json2Midi()
 @router.post("/", status_code=status.HTTP_200_OK)
 async def create_song(payload: SongCreateInput):
     # read the content of the file pre_prompt.txt into a string
-    import os
-
     with open("app/songGPT/generators/pre_prompt.txt", "r") as f:
         pre_prompt = f.read()
         history = [{"content": pre_prompt, "role": "user"}]
