@@ -79,7 +79,6 @@ class Json2Midi:
         instrument_to_channel = {
             instrument: channel for channel, instrument in zip(channels, instrument_set)
         }
-        instrument_to_channel["Drums"] = 0  # set Drums to channel 9
         return instrument_to_channel
 
     @staticmethod
