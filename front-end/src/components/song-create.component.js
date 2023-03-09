@@ -1,9 +1,22 @@
 import React from "react";
 import { Ionicons } from "@expo/vector-icons";
-import { Button, HStack, Icon, Input, VStack } from "native-base";
+import {
+  Box,
+  Button,
+  HStack,
+  Icon,
+  IconButton,
+  Input,
+  Popover,
+  VStack,
+  Text,
+  Heading,
+  FormControl,
+} from "native-base";
 // internal
 import { useCreateSong } from "../hooks/useCreateSong";
 import { useNavigation } from "@react-navigation/native";
+import { AboutUs } from "./about-us.component";
 
 export const SongCreate = () => {
   const navigation = useNavigation();
@@ -22,44 +35,56 @@ export const SongCreate = () => {
       <VStack
         flex={1}
         maxW={992}
-        space={"lg"}
+        space={"2xl"}
         alignItems={"center"}
         justifyContent="center"
       >
-        <Input
-          // logic
-          value={prompt}
-          onChangeText={setPrompt}
-          // styling
-          px={3}
-          py={5}
-          shadow={1}
-          size={"lg"}
-          width={"90%"}
-          borderWidth={1}
-          isFocused={true}
-          autoFocus={true}
-          borderRadius="3xl"
-          numberOfLines={4}
-          variant="unstyled"
-          placeholder="Describe the song you want in as much detail as possible"
-          _hover={{
-            shadow: 5,
-          }}
-          _focus={{
-            shadow: 3,
-            placeholderTextColor: "gray.400",
-          }}
-          InputLeftElement={
-            <Icon
-              ml={3}
-              size={"sm"}
-              as={Ionicons}
-              color="gray.400"
-              name="musical-notes"
+        <FormControl>
+          <VStack alignItems={"center"} space={"sm"}>
+            <Input
+              // logic
+              maxLength={480}
+              value={prompt}
+              onChangeText={setPrompt}
+              // styling
+              px={3}
+              py={5}
+              shadow={1}
+              size={"lg"}
+              width={"90%"}
+              borderWidth={1}
+              isFocused={true}
+              autoFocus={true}
+              borderRadius="3xl"
+              numberOfLines={4}
+              variant="unstyled"
+              placeholder="Describe the song you want in as much detail as possible"
+              _hover={{
+                shadow: 5,
+              }}
+              _focus={{
+                shadow: 3,
+                placeholderTextColor: "gray.400",
+              }}
+              InputLeftElement={
+                <Icon
+                  ml={3}
+                  size={"sm"}
+                  as={Ionicons}
+                  color="gray.400"
+                  name="musical-notes"
+                />
+              }
+              InputRightElement={<AboutUs />}
             />
-          }
-        />
+            <FormControl.HelperText alignSelf={"center"} maxWidth={400}>
+              Paste your favorite quote or poem and let our language model
+              generate a beautiful and original piece of music for you. Please
+              note, that right now we are only limited to using the Piano.
+            </FormControl.HelperText>
+          </VStack>
+        </FormControl>
+
         <Button
           // logic
           onPress={() => createSong.mutate(prompt)}

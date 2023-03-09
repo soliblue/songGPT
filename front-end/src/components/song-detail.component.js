@@ -1,15 +1,16 @@
 import React from "react";
-import { HStack, Text, VStack } from "native-base";
+import { HStack, ScrollView, Text, VStack } from "native-base";
 import ReactAudioPlayer from "react-audio-player";
 // internal
 import { useSong } from "../hooks/useSong";
+import { Markdown } from "../components/markdown.component";
+import { AboutJson } from "../components/about-json.component";
 
 export const SongDetail = ({
   songID = "db23c93a-82c9-47f5-bc9a-ee5a3f878d70",
 }) => {
   const song = useSong(songID);
   const filePath = `https://firebasestorage.googleapis.com/v0/b/songgpt-xyz.appspot.com/o/songs%2F${songID}%2F${songID}.wav?alt=media`;
-  console.log(filePath);
   const getRandomColor = (number) => {
     const colors = [
       "#F9D71C",
@@ -28,25 +29,42 @@ export const SongDetail = ({
   };
   return (
     <HStack justifyContent={"center"}>
-      <VStack
-        bg={{
-          linearGradient: {
-            end: [1, 0],
-            start: [0, 0],
+      <VStack maxW={"100%"}>
+        <VStack
+          p={5}
+          m={3}
+          space={5}
+          shadow={1}
+          maxWidth={992}
+          borderRadius="lg"
+          bg={{
+            linearGradient: {
+              end: [1, 0],
+              start: [0, 0],
 
-            colors: [getRandomColor(), getRandomColor()],
-          },
-        }}
-        shadow={1}
-        p={5}
-        m={3}
-        space={5}
-        borderRadius="lg"
-      >
-        <Text textAlign={"center"} fontWeight="bold">
-          {song?.data?.prompt}
-        </Text>
-        <ReactAudioPlayer src={filePath} controls />
+              colors: [getRandomColor(), getRandomColor()],
+            },
+          }}
+        >
+          <Text maxWidth={"100%"}>
+            <Text bold>Input: </Text>
+            {song?.data?.prompt}
+          </Text>
+          <ScrollView height={200} borderRadius="md">
+            <AboutJson mb={-5} />
+
+            <Markdown
+              text={
+                "```json\n" +
+                JSON.stringify(song?.data?.score, null, 2) +
+                "\n````"
+              }
+            />
+          </ScrollView>
+          <HStack justifyContent={"center"}>
+            <ReactAudioPlayer src={filePath} controls />
+          </HStack>
+        </VStack>
       </VStack>
     </HStack>
   );

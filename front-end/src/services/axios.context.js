@@ -6,7 +6,7 @@ import { Platform } from "react-native";
 export const AxiosContext = React.createContext(null);
 
 export const AxiosContextProvider = ({ children }) => {
-  const baseURL = "https://songgpt-gdkjghjswq-ez.a.run.app/";
+  const baseURL = "https://api.songgpt.xyz/";
 
   const headers = {
     platform: Platform.OS,
