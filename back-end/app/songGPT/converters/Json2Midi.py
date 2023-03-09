@@ -72,9 +72,7 @@ class Json2Midi:
 
     @staticmethod
     def get_instrument_to_channel_mapping(json_audio: JsonAudio) -> dict:
-        instrument_set = set(track.instrument for track in json_audio.tracks) - {
-            "Drums"
-        }
+        instrument_set = set(track.instrument for track in json_audio.tracks)
         channels = list(range(0, 9)) + list(range(10, 15))
         instrument_to_channel = {
             instrument: channel for channel, instrument in zip(channels, instrument_set)

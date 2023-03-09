@@ -1,5 +1,6 @@
 from io import BytesIO, StringIO
 
+from app.config import log
 from app.daos.songs import SongsDAO
 from app.firebase import upload_file
 from app.schemas.songs import SongCreate, SongCreateInput
@@ -14,6 +15,8 @@ router = APIRouter()
 MIDI2WAV_CONVERTER = Midi2Wav(sound_font="app/data/soundfonts/FluidR3_GM.sf2")
 JSON2MIDI_CONVERTER = Json2Midi()
 
+log.info(f"Loaded instruments: {MIDI2WAV_CONVERTER.instruments}")
+
 
 @router.post("/", status_code=status.HTTP_200_OK)
 async def create_song(payload: SongCreateInput):
@@ -27,11 +30,13 @@ async def create_song(payload: SongCreateInput):
         input=payload.prompt,
     )
 
-    print(score)
+    log.info(f"{payload.prompt=}{score=}")
     json_audio = JsonAudio.parse_raw(score)
     mid = JSON2MIDI_CONVERTER.convert(json_audio)
     # create a new file in python and store it in firebase
-    wav_file = MIDI2WAV_CONVERTER.convert(mid)
+    wav_file = MIDI2WAV_CONVERTER.convert(
+        mid, Json2Midi.get_instrument_to_channel_mapping(json_audio)
+    )
     # create a new file in python and store it in firebase
     midi_file = BytesIO()
     mid.save(file=midi_file)
