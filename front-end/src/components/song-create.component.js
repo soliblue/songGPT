@@ -1,18 +1,6 @@
 import React from "react";
 import { Ionicons } from "@expo/vector-icons";
-import {
-  Box,
-  Button,
-  HStack,
-  Icon,
-  IconButton,
-  Input,
-  Popover,
-  VStack,
-  Text,
-  Heading,
-  FormControl,
-} from "native-base";
+import { Button, HStack, Icon, Input, VStack, FormControl } from "native-base";
 // internal
 import { useCreateSong } from "../hooks/useCreateSong";
 import { useNavigation } from "@react-navigation/native";
@@ -53,8 +41,6 @@ export const SongCreate = () => {
               size={"lg"}
               width={"90%"}
               borderWidth={1}
-              isFocused={true}
-              autoFocus={true}
               borderRadius="3xl"
               numberOfLines={4}
               variant="unstyled"
