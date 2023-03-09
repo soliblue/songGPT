@@ -10,7 +10,7 @@ export const SongDetailScreen = ({ route }) => {
   const { songID } = route.params;
   console.log(songID);
   return (
-    <VStack flex={1} bg="white">
+    <VStack flex={1} bg="white" shadow={3} width={"100%"} space={"md"}>
       <Header />
       <VStack flex={1} justifyContent="center">
         <VStack space={10}>
