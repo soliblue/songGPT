@@ -55,21 +55,29 @@ class Midi2Wav:
 
                     config_file.flush()
 
+                    for file in [config_file]:
+                        with open(file.name, "r") as f:
+                            print(f.read())
+
+                    command = [
+                        "fluidsynth",
+                        "-ni",
+                        "-g",
+                        "0.2",
+                        self.sound_font,
+                        midi_file.name,
+                        "-F",
+                        wav_file.name,
+                        "-r",
+                        "44100",
+                        "-f",
+                        config_file.name,
+                    ]
+
+                    print("Running command: " + " ".join(command))
+
                     subprocess.call(
-                        [
-                            "fluidsynth",
-                            "-ni",
-                            "-g",
-                            "0.2",
-                            self.sound_font,
-                            midi_file.name,
-                            "-F",
-                            wav_file.name,
-                            "-r",
-                            "44100",
-                            "-f",
-                            config_file.name,
-                        ],
+                        command,
                         stdout=None,
                     )
                     # fluidsynth FluidR3_GM.sf2 midi_file.name -F wav_file.name -r 44100 -f config_file.name
