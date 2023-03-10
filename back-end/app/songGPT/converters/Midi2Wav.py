@@ -5,6 +5,7 @@ import tempfile
 from io import BytesIO
 
 import mido
+from app.config import log
 
 
 def get_file_instruments(sound_font):
@@ -57,7 +58,7 @@ class Midi2Wav:
 
                     for file in [config_file]:
                         with open(file.name, "r") as f:
-                            print(f.read())
+                            log.info(f.read())
 
                     command = [
                         "fluidsynth",
@@ -74,7 +75,7 @@ class Midi2Wav:
                         config_file.name,
                     ]
 
-                    print("Running command: " + " ".join(command))
+                    log.info("Running command: " + " ".join(command))
 
                     subprocess.call(
                         command,
