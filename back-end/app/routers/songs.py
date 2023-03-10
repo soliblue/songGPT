@@ -1,4 +1,3 @@
-import os
 from io import BytesIO, StringIO
 
 from app.config import log
@@ -13,8 +12,7 @@ from fastapi import APIRouter, status
 
 router = APIRouter()
 
-ROOT = os.getenv("ROOT", ".")
-MIDI2WAV_CONVERTER = Midi2Wav(sound_font=ROOT + "/app/data/soundfonts/FluidR3_GM.sf2")
+MIDI2WAV_CONVERTER = Midi2Wav(sound_font="app/data/soundfonts/FluidR3_GM.sf2")
 JSON2MIDI_CONVERTER = Json2Midi()
 
 log.info(f"Loaded instruments: {MIDI2WAV_CONVERTER.instruments}")
