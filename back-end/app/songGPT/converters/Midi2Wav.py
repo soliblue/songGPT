@@ -73,6 +73,7 @@ class Midi2Wav:
                         "44100",
                         "-f",
                         config_file.name,
+                        "-v",
                     ]
 
                     log.info("Running command: " + " ".join(command))
