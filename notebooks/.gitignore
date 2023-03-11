@@ -2,3 +2,4 @@ output/*
 env/*
 checkpoints/*
 *.sf2
+temp/

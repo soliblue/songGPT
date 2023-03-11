@@ -1,4 +1,3 @@
-import os
 from io import BytesIO, StringIO
 
 from app.config import log

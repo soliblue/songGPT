@@ -1,7 +1,7 @@
 import logging
 import os
 
-LOG_LEVEL = os.environ.get("LOGLEVEL", "INFO")
+LOG_LEVEL = os.environ.get("LOGLEVEL", "DEBUG")
 
 # logger config
 if os.getenv("CLOUD_LOGGING", False):
