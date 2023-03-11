@@ -29,9 +29,6 @@ export const Navigation = () => (
     <Stack.Navigator
       screenOptions={{
         headerShown: false,
-        cardStyle: {
-          flex: 1,
-        },
       }}
     >
       <Stack.Screen name="SongCreate" component={SongCreateScreen} />

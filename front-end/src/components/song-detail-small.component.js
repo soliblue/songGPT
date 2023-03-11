@@ -48,7 +48,7 @@ export const SongDetailSmall = ({ song, size = 300 }) => {
         {song?.prompt}
       </Text>
 
-      <HStack space={5} justifyContent={"center"}>
+      <HStack space={5} justifyContent={"center"} alignItems="center">
         <ReactAudioPlayer src={filePath} controls />
 
         <IconButton
