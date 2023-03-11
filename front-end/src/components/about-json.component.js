@@ -13,7 +13,7 @@ export const AboutJson = ({ ...props }) => {
             // logic
             {...triggerProps}
           >
-            <Text color="lightText" underline>
+            <Text fontSize={"xs"} color="lightText" underline>
               What is this JSON file?
             </Text>
           </Pressable>

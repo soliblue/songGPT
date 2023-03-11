@@ -19,7 +19,7 @@ export const SongCreate = () => {
   }, [createSong.isSuccess]);
 
   return (
-    <HStack flex={1} justifyContent="center">
+    <HStack justifyContent="center">
       <VStack
         flex={1}
         maxW={992}
