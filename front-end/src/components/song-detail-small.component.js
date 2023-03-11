@@ -32,7 +32,7 @@ export const SongDetailSmall = ({ song, size = 300 }) => {
       shadow={1}
       width={size}
       borderRadius="md"
-      height={size * 0.75}
+      height={size * 0.5}
       justifyContent="space-between"
       bg={{
         linearGradient: {

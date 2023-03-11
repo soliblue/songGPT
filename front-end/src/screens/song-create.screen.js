@@ -1,5 +1,5 @@
 import React from "react";
-import { VStack } from "native-base";
+import { VStack, Text, Pressable } from "native-base";
 // internal components
 import { Footer } from "../components/footer.component";
 import { Header } from "../components/header.component";
@@ -10,8 +10,13 @@ export const SongCreateScreen = ({ navigation }) => {
     <VStack flex={1} bg="white">
       <Header />
       <VStack flex={1} justifyContent="center">
-        <VStack space={"2xl"} p={5}>
+        <VStack space={"sm"} p={5}>
           <SongCreate />
+          <Pressable onPress={() => navigation.navigate("SongList")}>
+            <Text fontSize={"xs"} color="gray.600" textAlign={"center"}>
+              See Examples
+            </Text>
+          </Pressable>
         </VStack>
       </VStack>
       <Footer />
