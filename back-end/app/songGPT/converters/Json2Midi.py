@@ -1,3 +1,5 @@
+from typing import Tuple
+
 import mido
 from app.songGPT.JsonAudio import JsonAudio, JsonTrackNote
 
@@ -7,7 +9,7 @@ class Json2Midi:
     def __init__(self):
         pass
 
-    def convert(self, json_audio: JsonAudio) -> mido.MidiFile:
+    def convert(self, json_audio: JsonAudio) -> Tuple[mido.MidiFile, dict]:
         # Create a MIDI file object
         mid = mido.MidiFile()
 
@@ -68,7 +70,7 @@ class Json2Midi:
             # Append the track to the MIDI file object
             mid.tracks.append(mid_track)
 
-        return mid
+        return mid, instrument_to_channel
 
     @staticmethod
     def get_instrument_to_channel_mapping(json_audio: JsonAudio) -> dict:
