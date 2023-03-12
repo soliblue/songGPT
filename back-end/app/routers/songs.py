@@ -1,4 +1,5 @@
 from io import BytesIO, StringIO
+from typing import Union
 
 from app.config import log
 from app.daos.songs import SongsDAO
@@ -32,11 +33,9 @@ async def create_song(payload: SongCreateInput):
 
     log.info(f"{payload.prompt=}{score=}")
     json_audio = JsonAudio.parse_raw(score)
-    mid = JSON2MIDI_CONVERTER.convert(json_audio)
+    mid, instr_to_dict = JSON2MIDI_CONVERTER.convert(json_audio)
     # create a new file in python and store it in firebase
-    wav_file = MIDI2WAV_CONVERTER.convert(
-        mid, Json2Midi.get_instrument_to_channel_mapping(json_audio)
-    )
+    wav_file = MIDI2WAV_CONVERTER.convert(mid, instr_to_dict)
     # create a new file in python and store it in firebase
     midi_file = BytesIO()
     mid.save(file=midi_file)
@@ -66,24 +65,25 @@ async def create_song(payload: SongCreateInput):
 
 
 @router.post("/json", status_code=status.HTTP_200_OK)
-async def create_song_from_json(score: str):
-    log.info(f"{score=}")
-    json_audio = JsonAudio.parse_raw(score)
-    mid = JSON2MIDI_CONVERTER.convert(json_audio)
-    # create a new file in python and store it in firebase
-    wav_file = MIDI2WAV_CONVERTER.convert(
-        mid, Json2Midi.get_instrument_to_channel_mapping(json_audio)
+async def create_song_from_json(json_audio: Union[str, JsonAudio]):
+    log.info(f"{json_audio=}")
+    json_audio = (
+        JsonAudio.parse_raw(json_audio) if isinstance(json_audio, str) else json_audio
     )
+    mid, instr_to_dict = JSON2MIDI_CONVERTER.convert(json_audio)
+    # create a new file in python and store it in firebase
+    wav_file = MIDI2WAV_CONVERTER.convert(mid, instr_to_dict)
     # create a new file in python and store it in firebase
     midi_file = BytesIO()
     mid.save(file=midi_file)
     json_file = StringIO(json_audio.json())
+
     # init connection to firestore songs collections
     songDao = SongsDAO()
     # create a new song in firestore
     songID = songDao.create(
         SongCreate(
-            prompt=score,
+            prompt=json_audio.json(),
             score=json_audio,
         )
     )
