@@ -6,6 +6,7 @@ import { themeConfig } from "./src/theme/theme.config";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { AxiosContextProvider } from "./src/services/axios.context";
 import { FirebaseContextProvider } from "./src/services/firebase.context";
+import { PlayerContextProvider } from "./src/services/player.context";
 
 const queryClient = new QueryClient();
 
@@ -22,7 +23,9 @@ export default function App() {
       <NativeBaseProvider theme={theme} config={config}>
         <FirebaseContextProvider>
           <AxiosContextProvider>
-            <Navigation />
+            <PlayerContextProvider>
+              <Navigation />
+            </PlayerContextProvider>
           </AxiosContextProvider>
         </FirebaseContextProvider>
       </NativeBaseProvider>
