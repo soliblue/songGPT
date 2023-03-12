@@ -1,7 +1,8 @@
 import React from "react";
+import { Linking } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
-import { HStack, Icon, IconButton, Spinner, Text } from "native-base";
+import { HStack, Icon, IconButton, Menu, Spinner, Text } from "native-base";
 import { PlayerContext } from "../services/player.context";
 import { GradientBackground } from "./gradient-background.component";
 
@@ -9,10 +10,16 @@ export const SongDetailSmall = ({ song, size = 300 }) => {
   const navigation = useNavigation();
   const player = React.useContext(PlayerContext);
 
-  const filePath = `https://firebasestorage.googleapis.com/v0/b/songgpt-xyz.appspot.com/o/songs%2F${song?.id}%2F${song?.id}.wav?alt=media`;
+  const getFileURL = (type) => {
+    return `https://firebasestorage.googleapis.com/v0/b/songgpt-xyz.appspot.com/o/songs%2F${song?.id}%2F${song?.id}.${type}?alt=media`;
+  };
 
-  const isPlaying = player.soundFileURL === filePath && player.isPlaying;
-  const isLoading = player.soundFileURL === filePath && player.isLoading;
+  const wavFileURL = getFileURL("wav");
+  const jsonFileURL = getFileURL("json");
+  const midiFileURL = getFileURL("mid");
+
+  const isPlaying = player.soundFileURL === wavFileURL && player.isPlaying;
+  const isLoading = player.soundFileURL === wavFileURL && player.isLoading;
 
   return (
     <GradientBackground
@@ -33,7 +40,7 @@ export const SongDetailSmall = ({ song, size = 300 }) => {
       <HStack space={5} justifyContent={"center"} alignItems="center">
         <IconButton
           size="lg"
-          disabled={!filePath || isLoading}
+          disabled={!wavFileURL || isLoading}
           icon={
             isLoading ? (
               <Spinner size={"sm"} />
@@ -45,7 +52,7 @@ export const SongDetailSmall = ({ song, size = 300 }) => {
             if (isPlaying) {
               await player.pauseSound();
             } else {
-              await player.playSound(filePath);
+              await player.playSound(wavFileURL);
             }
           }}
         />
@@ -57,6 +64,41 @@ export const SongDetailSmall = ({ song, size = 300 }) => {
             navigation.navigate("SongDetail", { songID: song?.id });
           }}
         />
+        <Menu
+          trigger={(triggerProps) => {
+            return (
+              <IconButton
+                size="lg"
+                icon={<Icon as={Ionicons} name="ellipsis-vertical" />}
+                {...triggerProps}
+              />
+            );
+          }}
+        >
+          <Menu.OptionGroup title="Download">
+            <Menu.Item
+              onPress={() => {
+                Linking.openURL(jsonFileURL);
+              }}
+            >
+              JSON
+            </Menu.Item>
+            <Menu.Item
+              onPress={() => {
+                Linking.openURL(midiFileURL);
+              }}
+            >
+              MIDI
+            </Menu.Item>
+            <Menu.Item
+              onPress={() => {
+                Linking.openURL(wavFileURL);
+              }}
+            >
+              WAV
+            </Menu.Item>
+          </Menu.OptionGroup>
+        </Menu>
       </HStack>
     </GradientBackground>
   );
