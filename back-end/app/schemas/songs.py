@@ -9,7 +9,7 @@ from pydantic import BaseModel, Field
 class SongCreateInput(BaseModel):
     prompt: str = Field(
         min_length=1,
-        max_length=480,
+        max_length=1000,
         description="The initial prompt provided by the user through the app.",
     )
 

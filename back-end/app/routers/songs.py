@@ -63,3 +63,39 @@ async def create_song(payload: SongCreateInput):
     )
     upload_file(wav_file, f"songs/{songID}", f"{songID}.wav", content_type="audio/wav")
     return songID
+
+
+@router.post("/json", status_code=status.HTTP_200_OK)
+async def create_song_from_json(score: str):
+    log.info(f"{score=}")
+    json_audio = JsonAudio.parse_raw(score)
+    mid = JSON2MIDI_CONVERTER.convert(json_audio)
+    # create a new file in python and store it in firebase
+    wav_file = MIDI2WAV_CONVERTER.convert(
+        mid, Json2Midi.get_instrument_to_channel_mapping(json_audio)
+    )
+    # create a new file in python and store it in firebase
+    midi_file = BytesIO()
+    mid.save(file=midi_file)
+    json_file = StringIO(json_audio.json())
+    # init connection to firestore songs collections
+    songDao = SongsDAO()
+    # create a new song in firestore
+    songID = songDao.create(
+        SongCreate(
+            prompt=score,
+            score=json_audio,
+        )
+    )
+    # upload both files to firebase
+    upload_file(
+        json_file,
+        f"songs/{songID}",
+        f"{songID}.json",
+        content_type="application/json",
+    )
+    upload_file(
+        midi_file, f"songs/{songID}", f"{songID}.mid", content_type="audio/midi"
+    )
+    upload_file(wav_file, f"songs/{songID}", f"{songID}.wav", content_type="audio/wav")
+    return songID
