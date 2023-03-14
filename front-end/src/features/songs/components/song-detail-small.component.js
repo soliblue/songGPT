@@ -3,8 +3,9 @@ import { Linking } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import { HStack, Icon, IconButton, Menu, Spinner, Text } from "native-base";
-import { PlayerContext } from "../services/player.context";
-import { GradientBackground } from "./gradient-background.component";
+// internal
+import { PlayerContext } from "src/services/player.context";
+import { GradientBackground } from "src/components/gradient-background.component";
 
 export const SongDetailSmall = ({ song, size = 300 }) => {
   const navigation = useNavigation();

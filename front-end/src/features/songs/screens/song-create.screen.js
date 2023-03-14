@@ -1,9 +1,9 @@
 import React from "react";
 import { VStack, Text, Pressable } from "native-base";
 // internal components
-import { Footer } from "../components/footer.component";
-import { Header } from "../components/header.component";
-import { SongCreate } from "../components/song-create.component";
+import { Footer } from "src/components/footer.component";
+import { Header } from "src/components/header.component";
+import { SongCreate } from "src/features/songs/components/song-create.component";
 
 export const SongCreateScreen = ({ navigation }) => {
   return (

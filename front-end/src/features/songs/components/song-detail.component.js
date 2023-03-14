@@ -2,9 +2,9 @@ import React from "react";
 import ReactAudioPlayer from "react-audio-player";
 import { HStack, ScrollView, Text, VStack } from "native-base";
 // internal
-import { Markdown } from "../components/markdown.component";
-import { AboutJson } from "../components/about-json.component";
-import { GradientBackground } from "./gradient-background.component";
+import { Markdown } from "src/components/markdown.component";
+import { AboutJson } from "src/components/about-json.component";
+import { GradientBackground } from "src/components/gradient-background.component";
 
 export const SongDetail = ({ song }) => {
   const filePath = `https://firebasestorage.googleapis.com/v0/b/songgpt-xyz.appspot.com/o/songs%2F${song?.id}%2F${song?.id}.wav?alt=media`;

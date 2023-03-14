@@ -1,18 +1,13 @@
 import React from "react";
 import { Ionicons } from "@expo/vector-icons";
-import { Box, Icon, IconButton, Popover, Pressable, Text } from "native-base";
+import { Icon, Popover, Pressable, Text } from "native-base";
 
 export const AboutJson = ({ ...props }) => {
   return (
     <Popover
       trigger={(triggerProps) => {
         return (
-          <Pressable
-            {...props}
-            icon={<Icon name="information-outline" as={Ionicons} />}
-            // logic
-            {...triggerProps}
-          >
+          <Pressable {...props} {...triggerProps}>
             <Text fontSize={"xs"} color="lightText" underline>
               What is this JSON file?
             </Text>

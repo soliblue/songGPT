@@ -1,11 +1,12 @@
 import React from "react";
 import { Pressable, Skeleton, Text, VStack } from "native-base";
+// internal hooks
+import { useSong } from "src/features/songs/hooks/useSong";
 // internal components
-import { Footer } from "../components/footer.component";
-import { Header } from "../components/header.component";
-import { SongCreate } from "../components/song-create.component";
-import { SongDetail } from "../components/song-detail.component";
-import { useSong } from "../hooks/useSong";
+import { Footer } from "src/components/footer.component";
+import { Header } from "src/components/header.component";
+import { SongCreate } from "src/features/songs/components/song-create.component";
+import { SongDetail } from "src/features/songs/components/song-detail.component";
 
 export const SongDetailScreen = ({ route, navigation }) => {
   const { songID } = route.params;

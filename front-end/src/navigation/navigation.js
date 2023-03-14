@@ -5,9 +5,9 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 // internal
 import { appRoutesConfig } from "./route.config";
-import { SongListScreen } from "../screens/song-list.screen";
-import { SongCreateScreen } from "../screens/song-create.screen";
-import { SongDetailScreen } from "../screens/song-detail.screen";
+import { SongListScreen } from "src/features/songs/screens/song-list.screen";
+import { SongCreateScreen } from "src/features/songs/screens/song-create.screen";
+import { SongDetailScreen } from "src/features/songs/screens/song-detail.screen";
 
 const Stack = createStackNavigator();
 

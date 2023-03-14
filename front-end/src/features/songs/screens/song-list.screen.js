@@ -1,12 +1,12 @@
 import React from "react";
-import { FlatList, HStack, Spinner, VStack, Text, Skeleton } from "native-base";
-
+import { FlatList, VStack, Skeleton } from "native-base";
+// internal hooks
+import { useSongs } from "src/features/songs/hooks/useSongs";
 // internal components
-import { Footer } from "../components/footer.component";
-import { Header } from "../components/header.component";
-import { SongCreate } from "../components/song-create.component";
-import { useSongs } from "../hooks/useSongs";
-import { SongDetailSmall } from "../components/song-detail-small.component";
+import { Footer } from "src/components/footer.component";
+import { Header } from "src/components/header.component";
+import { SongCreate } from "src/features/songs/components/song-create.component";
+import { SongDetailSmall } from "src/features/songs/components/song-detail-small.component";
 
 const SongListSkeleton = () => (
   <FlatList

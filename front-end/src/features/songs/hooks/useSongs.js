@@ -8,7 +8,7 @@ import {
   collection,
   startAfter,
 } from "firebase/firestore";
-import { FirebaseContext } from "../services/firebase.context";
+import { FirebaseContext } from "src/services/firebase.context";
 
 export const useSongs = (itemsLimit = 6) => {
   const { firestore } = React.useContext(FirebaseContext);

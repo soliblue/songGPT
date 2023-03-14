@@ -1,12 +1,12 @@
 import React from "react";
-import { Navigation } from "./src/navigation/navigation";
+import { Navigation } from "src/navigation/navigation";
 import { extendTheme, NativeBaseProvider } from "native-base";
 // internal
-import { themeConfig } from "./src/theme/theme.config";
+import { themeConfig } from "src/theme/theme.config";
 import { QueryClient, QueryClientProvider } from "react-query";
-import { AxiosContextProvider } from "./src/services/axios.context";
-import { FirebaseContextProvider } from "./src/services/firebase.context";
-import { PlayerContextProvider } from "./src/services/player.context";
+import { AxiosContextProvider } from "src/services/axios.context";
+import { FirebaseContextProvider } from "src/services/firebase.context";
+import { PlayerContextProvider } from "src/services/player.context";
 
 const queryClient = new QueryClient();
 

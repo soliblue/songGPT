@@ -2,7 +2,7 @@ import React from "react";
 import { useQuery } from "react-query";
 import { doc, getDoc, collection } from "firebase/firestore";
 // internal
-import { FirebaseContext } from "../services/firebase.context";
+import { FirebaseContext } from "src/services/firebase.context";
 
 export const useSong = (songID) => {
   const { firestore } = React.useContext(FirebaseContext);

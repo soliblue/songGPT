@@ -1,10 +1,11 @@
 import React from "react";
-import { Ionicons } from "@expo/vector-icons";
-import { Button, HStack, Icon, Input, VStack, FormControl } from "native-base";
-// internal
-import { useCreateSong } from "../hooks/useCreateSong";
 import { useNavigation } from "@react-navigation/native";
-import { AboutUs } from "./about-us.component";
+import { Button, HStack, Input, VStack, FormControl } from "native-base";
+// internal hooks
+import { useCreateSong } from "src/features/songs/hooks/useCreateSong";
+// internal components
+import { AboutUs } from "src/components/about-us.component";
+import { SongCreateSettings } from "src/features/songs/components/song-create-settings.component";
 
 export const SongCreate = () => {
   const navigation = useNavigation();
@@ -52,15 +53,7 @@ export const SongCreate = () => {
                 shadow: 3,
                 placeholderTextColor: "gray.400",
               }}
-              InputLeftElement={
-                <Icon
-                  ml={3}
-                  size={"sm"}
-                  as={Ionicons}
-                  color="gray.400"
-                  name="musical-notes"
-                />
-              }
+              InputLeftElement={<SongCreateSettings />}
               InputRightElement={<AboutUs />}
             />
             <FormControl.HelperText alignSelf={"center"} maxWidth={400} mx={5}>
