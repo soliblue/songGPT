@@ -33,9 +33,16 @@ class Midi2Wav:
     def __init__(self, sound_font: str):
         self.sound_font = sound_font
         self.instruments = {
-            "Yamaha Grand Piano": {"bank": 0, "num": 0},
+            "Piano": {"bank": 0, "num": 0},
             "Violin": {"bank": 0, "num": 40},
             "Cello": {"bank": 0, "num": 42},
+            "Strings": {"bank": 0, "num": 49},
+            "Viola": {"bank": 0, "num": 41},
+            "Sax": {"bank": 0, "num": 65},
+            "Guitar": {"bank": 0, "num": 27},
+            "Clarinet": {"bank": 0, "num": 71},
+            "Xylophone": {"bank": 0, "num": 13},
+            "Flute": {"bank": 0, "num": 73},
         }
         # self.instruments = get_file_instruments(sound_font)
 
