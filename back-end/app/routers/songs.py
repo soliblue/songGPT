@@ -21,16 +21,12 @@ log.info(f"Loaded instruments: {MIDI2WAV_CONVERTER.instruments}")
 
 @router.post("/", status_code=status.HTTP_200_OK)
 async def create_song(payload: SongCreateInput):
-    # read the content of the file pre_prompt.txt into a string
-    with open("app/songGPT/generators/pre_prompt.txt", "r") as f:
-        pre_prompt = f.read()
-        history = [{"content": pre_prompt, "role": "user"}]
     # load a new instance of the ChatGPT with the pre_prompt
+    history = [{"content": payload.pre_prompt, "role": "system"}]
     chatGPT = ChatGPT(history=history)
     score = chatGPT.generate(
         input=payload.prompt,
     )
-
     log.info(f"{payload.prompt=}{score=}")
     json_audio = JsonAudio.parse_raw(score)
     mid, instr_to_dict = JSON2MIDI_CONVERTER.convert(json_audio)
@@ -48,6 +44,7 @@ async def create_song(payload: SongCreateInput):
             history=history,
             score=json_audio,
             prompt=payload.prompt,
+            pre_prompt=payload.pre_prompt,
         )
     )
     # upload both files to firebase

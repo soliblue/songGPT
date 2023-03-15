@@ -8,24 +8,18 @@ export const useCreateSong = () => {
 
   const queryClient = useQueryClient();
 
-  return useMutation(
-    (prompt) =>
-      client.post(`songs/`, {
-        prompt: prompt,
-      }),
-    {
-      onSuccess: (resp) => {
-        Toast.show({
-          title: "Song created successfully 🎶",
-        });
-        queryClient.refetchQueries(["songs"]);
-      },
-      onError: (error) => {
-        console.error(error.response?.data);
-        Toast.show({
-          title: "Something went wrong 😢 ...",
-        });
-      },
-    }
-  );
+  return useMutation((payload) => client.post(`songs/`, payload), {
+    onSuccess: (resp) => {
+      Toast.show({
+        title: "Song created successfully 🎶",
+      });
+      queryClient.refetchQueries(["songs"]);
+    },
+    onError: (error) => {
+      console.error(error.response?.data);
+      Toast.show({
+        title: "Something went wrong 😢 ...",
+      });
+    },
+  });
 };

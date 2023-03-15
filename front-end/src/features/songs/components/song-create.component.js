@@ -5,12 +5,14 @@ import { Button, HStack, Input, VStack, FormControl } from "native-base";
 import { useCreateSong } from "src/features/songs/hooks/useCreateSong";
 // internal components
 import { AboutUs } from "src/components/about-us.component";
+import { defaultPrompt } from "src/features/songs/components/songs-create-settings-prompt";
 import { SongCreateSettings } from "src/features/songs/components/song-create-settings.component";
 
 export const SongCreate = () => {
   const navigation = useNavigation();
   const createSong = useCreateSong();
   const [prompt, setPrompt] = React.useState("");
+  const [prePrompt, setPrePrompt] = React.useState(defaultPrompt);
 
   React.useEffect(() => {
     if (createSong.isSuccess && navigation) {
@@ -18,6 +20,13 @@ export const SongCreate = () => {
       navigation.navigate("SongDetail", { songID: createSong?.data?.data });
     }
   }, [createSong.isSuccess]);
+
+  const onCreateSong = () => {
+    createSong.mutate({
+      pre_prompt: prePrompt,
+      prompt: prompt,
+    });
+  };
 
   return (
     <HStack justifyContent="center">
@@ -53,7 +62,12 @@ export const SongCreate = () => {
                 shadow: 3,
                 placeholderTextColor: "gray.400",
               }}
-              InputLeftElement={<SongCreateSettings />}
+              InputLeftElement={
+                <SongCreateSettings
+                  prePrompt={prePrompt}
+                  setPrePrompt={setPrePrompt}
+                />
+              }
               InputRightElement={<AboutUs />}
             />
             <FormControl.HelperText alignSelf={"center"} maxWidth={400} mx={5}>
@@ -67,7 +81,7 @@ export const SongCreate = () => {
 
         <Button
           // logic
-          onPress={() => createSong.mutate(prompt)}
+          onPress={onCreateSong}
           isLoading={createSong.isLoading}
           // styling
           py={3}

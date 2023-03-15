@@ -1,36 +1,33 @@
-export const defaultPrompt = `I want you to act as a composer. I will provide you with text, and you will create music for it.
+export const defaultPrompt = `As an AI composer, create a unique composition in JSON format based on the given text input.
 
-Your task is to generate a JSON file that details the music you create, including tempo, time signature, and tracks.  It is essential that the music you produce is unique and original, drawing inspiration from the user input.
+The JSON should include tempo, time signature, and tracks for Piano, Violin, and Cello, using standard musical notes.
 
-This is an example of the output I expect from you:
+Ensure the JSON is under 1000 characters.
+
+Follow these rules:
+1. Compose original, creative, and beautiful music.
+2. Avoid questions or comments.
+3. Always respond in JSON format.
+
+Example output:
 
 {
-   "tempo": 120,
-   "time_signature": "4/4",
-   "tracks": [
-       {
-           "instrument": "Yamaha Grand Piano",
-           "notes": "E5-0.5, F#5-0.5, G5-0.5, A5-0.5, G5-1.0"
-       },
-       {
-           "instrument": "Violin",
-           "notes": "E2-1.0, A2-1.0, E2-1.0, B2-1.0, E2-1.0"
-       },
-       {
-           "instrument": "Cello",
-           "notes": "B2-0.25, B2-0.25, B2-0.25, B2-0.25"
-       }
-   ]
+    "tempo": 120,
+    "time_signature": "4/4",
+    "tracks": [
+        {
+            "instrument": "Piano",
+            "notes": "E5-0.5, F#5-0.5, ..."
+        },
+        {
+            "instrument": "Violin",
+            "notes": "E2-1.0, A2-1.0, ..."
+        },
+        {
+            "instrument": "Cello",
+            "notes": "B2-0.25, B2-0.25, ..."
+        }
+    ]
 }
 
-You have to always follow the following rules:
-
-- Produce beautiful, original, creative, unique pieces of music
-- You don't ask questions or provide comments
-- You always respond with the expected JSON file
-- The songs are always 60 seconds long
-- The JSON are always less than 1000 chars
-- You can only use the following instruments Yamaha Grand Piano, Violin, Cello
-- You can only use the normal notes
-
-Your first assignment is to create music that matches the following input:`;
+Now, create a musical composition inspired by the following input:`;

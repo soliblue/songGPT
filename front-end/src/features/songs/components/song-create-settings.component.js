@@ -15,9 +15,8 @@ import {
 } from "native-base";
 import { defaultPrompt } from "src/features/songs/components/songs-create-settings-prompt";
 
-export const SongCreateSettings = () => {
+export const SongCreateSettings = ({ prePrompt, setPrePrompt }) => {
   const [isOpen, setIsOpen] = React.useState(false);
-  const [prompt, setPrompt] = React.useState(defaultPrompt);
 
   return (
     <>
@@ -101,16 +100,16 @@ export const SongCreateSettings = () => {
           <Modal.Body>
             <VStack space={3}>
               <textarea
+                rows={10}
                 style={{
                   padding: 10,
                 }}
                 // logic
-                value={prompt}
+                value={prePrompt}
                 maxLength={1500}
-                onChange={(e) => setPrompt(e.target.value)}
-                rows={10}
+                onChange={(e) => setPrePrompt(e.target.value)}
               />
-              {prompt != defaultPrompt && (
+              {prePrompt != defaultPrompt && (
                 <Button
                   variant={"ghost"}
                   colorScheme="white"
