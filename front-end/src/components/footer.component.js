@@ -36,6 +36,16 @@ export const Footer = () => (
       >
         <Text> Tommy</Text>
       </Pressable>
+      &
+      <Pressable
+        onPress={() => {
+          Linking.openURL(
+            "https://www.linkedin.com/in/justin-dorber-370581130/"
+          );
+        }}
+      >
+        <Text> Justin</Text>
+      </Pressable>
     </Text>
   </HStack>
 );

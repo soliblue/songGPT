@@ -113,7 +113,7 @@ export const SongCreateSettings = ({ prePrompt, setPrePrompt }) => {
                 <Button
                   variant={"ghost"}
                   colorScheme="white"
-                  onPress={() => setPrompt(defaultPrompt)}
+                  onPress={() => setPrePrompt(defaultPrompt)}
                 >
                   Reset
                 </Button>
