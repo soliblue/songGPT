@@ -26,7 +26,7 @@ export const Footer = () => (
       >
         <Text> Soli </Text>
       </Pressable>
-      &
+      ,
       <Pressable
         onPress={() => {
           Linking.openURL(
@@ -34,7 +34,7 @@ export const Footer = () => (
           );
         }}
       >
-        <Text> Tommy</Text>
+        <Text> Tommy </Text>
       </Pressable>
       &
       <Pressable
