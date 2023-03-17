@@ -5,7 +5,6 @@ from app.songGPT.JsonAudio import JsonAudio, JsonTrackNote
 
 
 class Json2Midi:
-    # instrument_to_channel =
     def __init__(self):
         pass
 
@@ -36,22 +35,34 @@ class Json2Midi:
                 )
             )
 
+            time_passed = 0
+            start_tick = round(
+                mido.second2tick(
+                    track.start_time,
+                    mid.ticks_per_beat,
+                    mido.bpm2tempo(json_audio.tempo),
+                )
+            )
+
             # Add note messages for each note in the track
             for note in track.notes:
-                # Extract pitch and duration from the note string
-                pitch = self.parse_note(note)
-                duration = int(
-                    note.duration * mid.ticks_per_beat * (json_audio.tempo / 60)
+                # Extract pitch, duration, and dynamic from the note string
+                pitch, duration, dynamic = self.parse_note(note)
+                duration_ticks = round(
+                    duration * mid.ticks_per_beat * (json_audio.tempo / 60)
                 )
 
-                # Add note on and note off messages with velocity 64 and time 0
+                # Calculate the time since the last note
+                time_since_last_note = start_tick if time_passed == 0 else 0
+
+                # Add note on and note off messages with the extracted dynamic and time
                 mid_track.append(
                     mido.Message(
                         "note_on",
                         channel=instrument_to_channel[track.instrument],
                         note=pitch,
-                        velocity=64,
-                        time=0,
+                        velocity=dynamic,
+                        time=time_since_last_note,
                     )
                 )
                 mid_track.append(
@@ -59,10 +70,12 @@ class Json2Midi:
                         "note_off",
                         channel=instrument_to_channel[track.instrument],
                         note=pitch,
-                        velocity=64,
-                        time=duration,
+                        velocity=dynamic,
+                        time=duration_ticks,
                     )
                 )
+
+                time_passed = duration_ticks
 
             # Add end of track meta message
             mid_track.append(mido.MetaMessage("end_of_track"))
@@ -82,8 +95,19 @@ class Json2Midi:
         return instrument_to_channel
 
     @staticmethod
+    def parse_duration_and_dynamic(note: JsonTrackNote):
+        """Extract duration and dynamic from the note string."""
+        # Define a dictionary for dynamics
+        dynamics = {"pp": 33, "p": 49, "mp": 64, "mf": 80, "f": 96, "ff": 112}
+
+        duration = note.duration
+        dynamic_value = dynamics[note.dynamic]
+
+        return duration, dynamic_value
+
+    @staticmethod
     def parse_note(note: JsonTrackNote):
-        """Convert a pitch name to a MIDI note number."""
+        """Convert a pitch name to a MIDI note number and extract duration and dynamic."""
         # Define a dictionary of note names and their offsets from C
         note_names = {
             "C": 0,
@@ -109,5 +133,8 @@ class Json2Midi:
         # note_number = (octave + 1) * 12 + note_names[note_name]
         note_number = (note.octave + 1) * 12 + note_names[note.name]
 
-        # Return the MIDI note number
-        return note_number
+        # Extract duration and dynamic from the note
+        duration, dynamic = Json2Midi.parse_duration_and_dynamic(note)
+
+        # Return the MIDI note number, duration, and dynamic
+        return note_number, duration, dynamic

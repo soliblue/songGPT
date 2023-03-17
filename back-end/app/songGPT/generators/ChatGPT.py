@@ -15,7 +15,7 @@ class ChatGPT:
     ) -> str:
         # https://beta.openai.com/docs/api-reference/completions/create
         response = openai.ChatCompletion.create(
-            model="gpt-3.5-turbo",
+            model="gpt-4",
             user="experimental-notebook",
             messages=self.history
             + [

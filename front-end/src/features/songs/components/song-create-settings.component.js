@@ -106,7 +106,7 @@ export const SongCreateSettings = ({ prePrompt, setPrePrompt }) => {
                 }}
                 // logic
                 value={prePrompt}
-                maxLength={1500}
+                maxLength={2500}
                 onChange={(e) => setPrePrompt(e.target.value)}
               />
               {prePrompt != defaultPrompt && (

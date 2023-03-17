@@ -3,7 +3,7 @@ from typing import List, Union
 
 from pydantic import BaseModel, confloat, conint, constr, validator
 
-NOTE_REGEX = r"(?P<name>[A-G][#b]?)(?P<octave>[1-9])-(?P<duration>\d+?[.]?\d+?)"
+NOTE_REGEX = r"(?P<name>[A-G][#b]?)(?P<octave>[1-9])-(?P<duration>\d+?[.]?\d+?)-(?P<dynamic>[a-z]+)"
 TIME_SIGNATURE_REGEX = r"(?P<numerator>\d+?)/(?P<denominator>\d+?)"
 
 
@@ -11,15 +11,17 @@ class JsonTrackNote(BaseModel):
     name: constr(regex=r"[A-G][#b]?")
     octave: conint(ge=1, le=9)
     duration: confloat(ge=0)
+    dynamic: constr(regex=r"pp|p|mp|mf|f|ff")
 
 
 class JsonTrack(BaseModel):
     instrument: str
+    start_time: confloat(ge=0)
     notes: Union[constr(regex=NOTE_REGEX, min_length=1), List[JsonTrackNote]]
 
     @validator("notes")
     def validate_notes(cls, v) -> List[JsonTrackNote]:
-        """Parse notes string into a list of Tuples(name, octave, duration)"""
+        """Parse notes string into a list of Tuples(name, octave, duration, dynamic)"""
         if not v:
             return []
         if isinstance(v, str):

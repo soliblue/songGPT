@@ -1,6 +1,6 @@
 import React from "react";
 import { useNavigation } from "@react-navigation/native";
-import { Button, HStack, Input, VStack, FormControl } from "native-base";
+import { Button, HStack, Input, VStack, FormControl, Text } from "native-base";
 // internal hooks
 import { useCreateSong } from "src/features/songs/hooks/useCreateSong";
 // internal components
@@ -70,12 +70,21 @@ export const SongCreate = () => {
               }
               InputRightElement={<AboutUs />}
             />
-            <FormControl.HelperText alignSelf={"center"} maxWidth={400} mx={5}>
+            <Text
+              color={"gray.700"}
+              fontSize={"2xs"}
+              alignSelf={"center"}
+              maxWidth={400}
+              mx={5}
+            >
               Paste your favorite quote or poem and let our language model
               generate a beautiful and original piece of music for you. Please
-              note, that right now we are only limited to using the Piano, Cello
-              & Violin.
-            </FormControl.HelperText>
+              note, that right now we are only limited to using the{" "}
+              <Text fontWeight="semibold">
+                Piano, Violin, Cello, Strings, Viola, Sax, Guitar, Clarinet,
+                Xylophone & Flute
+              </Text>
+            </Text>
           </VStack>
         </FormControl>
 
