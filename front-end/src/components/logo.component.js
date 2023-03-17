@@ -26,19 +26,7 @@ export const Logo = () => {
           }}
         />
         <Text fontWeight={"bold"} fontSize="lg">
-          SongGPT.
-          <Text
-            style={{
-              // Add a linear gradient background to the text
-              background: "linear-gradient(to right, #1982FC, #316dca)",
-              // Clip the background to the text
-              webkitBackgroundClip: "text",
-              // Make the text transparent
-              WebkitTextFillColor: "transparent",
-            }}
-          >
-            xyz
-          </Text>
+          SongGPT.xyz
         </Text>
       </HStack>
     </Pressable>
