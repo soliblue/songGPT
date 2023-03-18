@@ -1,9 +1,8 @@
 import React from "react";
 import { Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
-import { HStack, Icon, IconButton, ScrollView, Text } from "native-base";
+import { HStack, Icon, IconButton, ScrollView } from "native-base";
 // internal
-import { Markdown } from "src/components/markdown.component";
 import { GradientBackground } from "src/components/gradient-background.component";
 import { SongDetailPlayer } from "src/features/songs/components/song-detail-player.component";
 import { SongDetailDownload } from "src/features/songs/components/song-detail-download.component";

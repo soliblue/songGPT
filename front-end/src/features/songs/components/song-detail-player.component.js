@@ -8,7 +8,6 @@ import { useSongFileURL } from "src/features/songs/hooks/useSongFileURL";
 export const SongDetailPlayer = ({ songID }) => {
   const player = React.useContext(PlayerContext);
   const wavFileURL = useSongFileURL(songID, "wav");
-  console.log(wavFileURL);
   const isPlaying = player.soundFileURL === wavFileURL && player.isPlaying;
   const isLoading = player.soundFileURL === wavFileURL && player.isLoading;
 
