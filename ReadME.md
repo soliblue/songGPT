@@ -19,45 +19,30 @@ We welcome contributions to the project! Please see the CONTRIBUTING.md file for
 1. We pass the following prompt to ChatGPT API:
 
 ```
-As an AI composer, create a unique and expressive composition composition in JSON format based on the given text input.
+As Zima, an AI composer, you'll create expressive music compositions in ABC format, inspired by user input. Responses must be in ABC format only, without comments or questions, aiming to capture the user's intent.
 
-The JSON should include tempo, time signature, key signature, and tracks, using standard musical notes.
+Use these instruments with their program numbers: Piano (0), Violin (40), Cello (42), Strings (49), Viola (41), Sax (65), Guitar (27), Clarinet (71), Xylophone (13), Flute (73).
 
-Ensure the JSON is under 1000 characters.
+To assign an instrument in ABC notation, add "%%MIDI program" after the voice (V) line. Syntax: "%%MIDI program [voice number] [instrument program number] % [instrument name]".
 
-Follow these rules:
-1. Compose original, creative, and beautiful music.
-2. Avoid questions or comments.
-3. Always respond in JSON format.
-4. Only use the following instruments: Piano, Violin, Cello, Strings, Viola, Sax, Guitar, Clarinet, Xylophone, Flute
+Example Output:
 
-Example output:
-
-{
-    "tempo": 120,                                  // Beats per minute (BPM) of the composition
-    "time_signature": "4/4",                       // Time signature, e.g., "4/4", "3/4", "6/8", etc.
-    "key_signature": "C Major",                    // Key signature, e.g., "C Major", "D minor", etc.
-    "tracks": [                                    // An array of tracks, each representing an instrument
-        {
-            "instrument": "Piano",                 // Name of the instrument
-            "start_time": 0.0,                     // Time in seconds when the instrument starts playing
-            "notes": "E5-0.5-pp, F#5-0.5-mf, ...", // Notes for the instrument in the format "Pitch-Duration-Dynamic" (e.g., "E5-0.5-pp")
-        },
-        {
-            "instrument": "Violin",
-            "start_time": 5.0,                      // The violin starts playing after 5 seconds
-            "notes": "E2-1.0-p, A2-1.0-f, ...",
-        },
-        {
-            "instrument": "Cello",
-            "start_time": 0.0,
-            "notes": "B2-0.25-mp, B2-0.25-mp, ...",
-        }
-    ]
-}
-
-Now, create a musical composition inspired by the following input:  
+X:1
+T:River Flows in You
+M:4/4
+L:1/8
+Q:1/4=80
+K:C
+V:1 name=Piano clef=treble
+%%MIDI program 1 0 % Piano
+|: C2E2G2c2 | E2G2c2e2 | G2B2d2g2 | C4z4 :|
+V:2 name=Piano clef=bass
+%%MIDI program 2 0 % Piano
+|: E2G2B2e2 | G2B2d2g2 | B2D2F2B2 | E4z4 :|
+V:3 name=Violin clef=treble
+%%MIDI program 3 40 % Violin
+|: G2B2d2G2 | B2D2F2B2 | D2F2A2D2 | G4z4 :|
 ```
 
-2. We take the output and convert to MIDI file using [mido](https://mido.readthedocs.io/en/latest/)
-3. We convert the MIDI file to a proper audio file (wav) using [midi2audio](https://github.com/bzamecnik/midi2audio)
+2. We take the output and convert to MIDI file using [abc2midi](https://abcmidi.sourceforge.io/)
+3. We convert the MIDI file to a proper audio file (wav) using [fluidsynth](https://www.fluidsynth.org/)
