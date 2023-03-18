@@ -1,98 +1,38 @@
-from io import BytesIO, StringIO
-from typing import Union
-
-from app.config import log
 from app.daos.songs import SongsDAO
-from app.firebase import upload_file
+from app.internal.config import log
+from app.internal.firebase import upload_file
+from app.internal.SongGPT import SongGPT
 from app.schemas.songs import SongCreate, SongCreateInput
-from app.songGPT.converters.Json2Midi import Json2Midi
-from app.songGPT.converters.Midi2Wav import Midi2Wav
-from app.songGPT.generators.ChatGPT import ChatGPT
-from app.songGPT.JsonAudio import JsonAudio
 from fastapi import APIRouter, status
 
 router = APIRouter()
 
-MIDI2WAV_CONVERTER = Midi2Wav(sound_font="app/data/soundfonts/FluidR3_GM.sf2")
-JSON2MIDI_CONVERTER = Json2Midi()
-
-log.info(f"Loaded instruments: {MIDI2WAV_CONVERTER.instruments}")
-
 
 @router.post("/", status_code=status.HTTP_200_OK)
 async def create_song(payload: SongCreateInput):
-    # load a new instance of the ChatGPT with the pre_prompt
-    history = [{"content": payload.pre_prompt, "role": "system"}]
-    chatGPT = ChatGPT(history=history)
-    score = chatGPT.generate(
-        input=payload.prompt,
+    songGPT = SongGPT()
+    # 1. Generate ABC using ChatGPT (LLM)
+    log.info("Generating ABC...")
+    abc, abc_file_path = songGPT.generate_abc(
+        system_message=payload.system_message,
+        prompt=payload.prompt,
     )
-    log.info(f"{payload.prompt=}{score=}")
-    json_audio = JsonAudio.parse_raw(score)
-    mid, instr_to_dict = JSON2MIDI_CONVERTER.convert(json_audio)
-    # create a new file in python and store it in firebase
-    wav_file = MIDI2WAV_CONVERTER.convert(mid, instr_to_dict)
-    # create a new file in python and store it in firebase
-    midi_file = BytesIO()
-    mid.save(file=midi_file)
-    json_file = StringIO(json_audio.json())
-    # init connection to firestore songs collections
+    log.info("Generated ABC")
+    # 2. Convert the ABC to MIDI using ABC2MIDI
+    midi_file_path = songGPT.abc_to_midi(abc_file_path)
+    # 3. Convert the MIDI file to a WAV file
+    wav_file_path = songGPT.midi_to_wav(midi_file_path)
+    # 4. Save generated files / data
     songDao = SongsDAO()
-    # create a new song in firestore
+    ## Create a new song in firestore
     songID = songDao.create(
         SongCreate(
-            history=history,
-            score=json_audio,
-            prompt=payload.prompt,
-            pre_prompt=payload.pre_prompt,
+            **payload.dict(),
+            abc=abc,
         )
     )
-    # upload both files to firebase
-    upload_file(
-        json_file,
-        f"songs/{songID}",
-        f"{songID}.json",
-        content_type="application/json",
-    )
-    upload_file(
-        midi_file, f"songs/{songID}", f"{songID}.mid", content_type="audio/midi"
-    )
-    upload_file(wav_file, f"songs/{songID}", f"{songID}.wav", content_type="audio/wav")
-    return songID
-
-
-@router.post("/json", status_code=status.HTTP_200_OK)
-async def create_song_from_json(json_audio: Union[str, JsonAudio]):
-    log.info(f"{json_audio=}")
-    json_audio = (
-        JsonAudio.parse_raw(json_audio) if isinstance(json_audio, str) else json_audio
-    )
-    mid, instr_to_dict = JSON2MIDI_CONVERTER.convert(json_audio)
-    # create a new file in python and store it in firebase
-    wav_file = MIDI2WAV_CONVERTER.convert(mid, instr_to_dict)
-    # create a new file in python and store it in firebase
-    midi_file = BytesIO()
-    mid.save(file=midi_file)
-    json_file = StringIO(json_audio.json())
-
-    # init connection to firestore songs collections
-    songDao = SongsDAO()
-    # create a new song in firestore
-    songID = songDao.create(
-        SongCreate(
-            prompt=json_audio.json(),
-            score=json_audio,
-        )
-    )
-    # upload both files to firebase
-    upload_file(
-        json_file,
-        f"songs/{songID}",
-        f"{songID}.json",
-        content_type="application/json",
-    )
-    upload_file(
-        midi_file, f"songs/{songID}", f"{songID}.mid", content_type="audio/midi"
-    )
-    upload_file(wav_file, f"songs/{songID}", f"{songID}.wav", content_type="audio/wav")
+    # upload all files to google cloud storage
+    upload_file(abc_file_path, f"songs/{songID}", f"{songID}.abc", "text/vnd.abc")
+    upload_file(midi_file_path, f"songs/{songID}", f"{songID}.mid", "audio/midi")
+    upload_file(wav_file_path, f"songs/{songID}", f"{songID}.wav", "audio/wav")
     return songID

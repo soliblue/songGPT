@@ -5,14 +5,15 @@ import { Button, HStack, Input, VStack, FormControl, Text } from "native-base";
 import { useCreateSong } from "src/features/songs/hooks/useCreateSong";
 // internal components
 import { AboutUs } from "src/components/about-us.component";
-import { defaultPrompt } from "src/features/songs/components/songs-create-settings-prompt";
+import { defaultSystemMessage } from "src/features/songs/components/default-system-message.js";
 import { SongCreateSettings } from "src/features/songs/components/song-create-settings.component";
 
-export const SongCreate = () => {
+export const SongCreate = ({ initialSystemMessage = defaultSystemMessage }) => {
   const navigation = useNavigation();
   const createSong = useCreateSong();
   const [prompt, setPrompt] = React.useState("");
-  const [prePrompt, setPrePrompt] = React.useState(defaultPrompt);
+  const [systemMessage, setSystemMessage] =
+    React.useState(initialSystemMessage);
 
   React.useEffect(() => {
     if (createSong.isSuccess && navigation) {
@@ -23,8 +24,8 @@ export const SongCreate = () => {
 
   const onCreateSong = () => {
     createSong.mutate({
-      pre_prompt: prePrompt,
       prompt: prompt,
+      system_message: systemMessage,
     });
   };
 
@@ -41,8 +42,8 @@ export const SongCreate = () => {
           <VStack alignItems={"center"} space={"sm"}>
             <Input
               // logic
-              maxLength={480}
               value={prompt}
+              maxLength={1000}
               onChangeText={setPrompt}
               // styling
               px={3}
@@ -64,18 +65,18 @@ export const SongCreate = () => {
               }}
               InputLeftElement={
                 <SongCreateSettings
-                  prePrompt={prePrompt}
-                  setPrePrompt={setPrePrompt}
+                  systemMessage={systemMessage}
+                  setSystemMessage={setSystemMessage}
                 />
               }
               InputRightElement={<AboutUs />}
             />
             <Text
-              color={"gray.700"}
-              fontSize={"2xs"}
-              alignSelf={"center"}
-              maxWidth={400}
               mx={5}
+              maxWidth={400}
+              fontSize={"2xs"}
+              color={"gray.700"}
+              alignSelf={"center"}
             >
               Paste your favorite quote or poem and let our language model
               generate a beautiful and original piece of music for you. Please
@@ -112,6 +113,9 @@ export const SongCreate = () => {
         >
           Generate
         </Button>
+        {createSong.isLoading && (
+          <Text>This normally takes less than 60 seconds</Text>
+        )}
       </VStack>
     </HStack>
   );

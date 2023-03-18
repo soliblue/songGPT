@@ -24,7 +24,7 @@ export const Footer = () => (
           Linking.openURL("https://twitter.com/SoliMouse");
         }}
       >
-        <Text> Soli </Text>
+        <Text> Soli</Text>
       </Pressable>
       ,
       <Pressable

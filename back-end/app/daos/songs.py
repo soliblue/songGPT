@@ -1,6 +1,6 @@
 from uuid import UUID
 
-from app.firebase import db
+from app.internal.firebase import db
 from app.schemas.songs import SongCreate, SongRead
 
 

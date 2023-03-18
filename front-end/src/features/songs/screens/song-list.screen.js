@@ -6,7 +6,7 @@ import { useSongs } from "src/features/songs/hooks/useSongs";
 import { Footer } from "src/components/footer.component";
 import { Header } from "src/components/header.component";
 import { SongCreate } from "src/features/songs/components/song-create.component";
-import { SongDetailSmall } from "src/features/songs/components/song-detail-small.component";
+import { SongDetail } from "src/features/songs/components/song-detail.component";
 
 const SongListSkeleton = () => (
   <FlatList
@@ -46,9 +46,7 @@ export const SongListScreen = ({ route }) => {
               keyExtractor={(song) => song.id}
               showsVerticalScrollIndicator={false}
               showsHorizontalScrollIndicator={false}
-              renderItem={({ item }) => (
-                <SongDetailSmall song={item} size={400} />
-              )}
+              renderItem={({ item }) => <SongDetail song={item} size={500} />}
               onEndReached={() => {
                 if (songs.hasNextPage && !songs.isFetchingNextPage) {
                   songs.fetchNextPage();

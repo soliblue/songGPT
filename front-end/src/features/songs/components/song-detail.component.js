@@ -1,47 +1,51 @@
 import React from "react";
-import ReactAudioPlayer from "react-audio-player";
-import { HStack, ScrollView, Text, VStack } from "native-base";
+import { Ionicons } from "@expo/vector-icons";
+import { useNavigation } from "@react-navigation/native";
+import { HStack, Icon, IconButton, ScrollView, Text } from "native-base";
 // internal
 import { Markdown } from "src/components/markdown.component";
-import { AboutJson } from "src/components/about-json.component";
 import { GradientBackground } from "src/components/gradient-background.component";
+import { SongDetailPlayer } from "src/features/songs/components/song-detail-player.component";
+import { SongDetailDownload } from "src/features/songs/components/song-detail-download.component";
 
 export const SongDetail = ({ song }) => {
-  const filePath = `https://firebasestorage.googleapis.com/v0/b/songgpt-xyz.appspot.com/o/songs%2F${song?.id}%2F${song?.id}.wav?alt=media`;
+  const navigation = useNavigation();
 
   return (
-    <HStack justifyContent={"center"}>
-      <VStack maxW={"100%"}>
-        <GradientBackground
-          p={5}
-          m={3}
-          space={5}
-          shadow={1}
-          maxWidth={992}
-          borderRadius="lg"
-        >
-          <Text
-            p={2}
-            borderRadius="md"
-            maxWidth={"100%"}
-            bg="rgba(255,255,255,0.5)"
-          >
-            <Text bold>Input: </Text>
-            {song?.prompt}
-          </Text>
-          <ScrollView height={200} borderRadius="md" bg="#263238" p={3}>
-            <AboutJson />
-            <Markdown
-              text={
-                "```json\n" + JSON.stringify(song?.score, null, 2) + "\n````"
-              }
-            />
-          </ScrollView>
-          <HStack justifyContent={"center"}>
-            <ReactAudioPlayer src={filePath} controls />
-          </HStack>
-        </GradientBackground>
-      </VStack>
-    </HStack>
+    <GradientBackground
+      p={5}
+      m={3}
+      space={3}
+      shadow={1}
+      width={400}
+      borderRadius="md"
+      justifyContent="space-between"
+    >
+      <ScrollView
+        p={2}
+        height={150}
+        borderRadius="md"
+        bg="rgba(255,255,255,0.15)"
+      >
+        <Text>{song?.prompt}</Text>
+      </ScrollView>
+
+      {song?.abc && (
+        <ScrollView height={200} borderRadius="md" bg="#263238">
+          <Markdown text={"```abc\n" + song?.abc + "\n````"} />
+        </ScrollView>
+      )}
+      <HStack space={5} justifyContent={"center"} alignItems="center">
+        <SongDetailPlayer songID={song?.id} />
+        <IconButton
+          size="lg"
+          icon={<Icon as={Ionicons} name="open-outline" />}
+          onPress={() => {
+            navigation.navigate("SongDetail", { songID: song?.id });
+          }}
+        />
+        <SongDetailDownload songID={song?.id} />
+      </HStack>
+    </GradientBackground>
   );
 };

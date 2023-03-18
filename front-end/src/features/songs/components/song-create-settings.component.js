@@ -4,7 +4,6 @@ import {
   Modal,
   IconButton,
   Icon,
-  TextArea,
   Popover,
   Pressable,
   Text,
@@ -13,9 +12,9 @@ import {
   Box,
   Button,
 } from "native-base";
-import { defaultPrompt } from "src/features/songs/components/songs-create-settings-prompt";
+import { defaultSystemMessage } from "src/features/songs/components/default-system-message.js";
 
-export const SongCreateSettings = ({ prePrompt, setPrePrompt }) => {
+export const SongCreateSettings = ({ systemMessage, setSystemMessage }) => {
   const [isOpen, setIsOpen] = React.useState(false);
 
   return (
@@ -105,15 +104,15 @@ export const SongCreateSettings = ({ prePrompt, setPrePrompt }) => {
                   padding: 10,
                 }}
                 // logic
-                value={prePrompt}
+                value={systemMessage}
                 maxLength={2500}
-                onChange={(e) => setPrePrompt(e.target.value)}
+                onChange={(e) => setSystemMessage(e.target.value)}
               />
-              {prePrompt != defaultPrompt && (
+              {systemMessage != defaultSystemMessage && (
                 <Button
                   variant={"ghost"}
                   colorScheme="white"
-                  onPress={() => setPrePrompt(defaultPrompt)}
+                  onPress={() => setSystemMessage(defaultSystemMessage)}
                 >
                   Reset
                 </Button>

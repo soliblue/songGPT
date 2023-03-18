@@ -2,12 +2,11 @@ from datetime import datetime
 from typing import Optional
 from uuid import UUID, uuid4
 
-from app.songGPT.JsonAudio import JsonAudio
 from pydantic import BaseModel, Field
 
 
 class SongCreateInput(BaseModel):
-    pre_prompt: str = Field(
+    system_message: str = Field(
         min_length=1,
         max_length=2500,
         description="The pre_prompt provided by the user through the app.",
@@ -20,8 +19,9 @@ class SongCreateInput(BaseModel):
 
 
 class SongCreate(SongCreateInput):
+    abc: Optional[str] = None
+    score: Optional[dict] = None
     id: UUID = Field(default_factory=uuid4)
-    score: Optional[JsonAudio] = None
     created_at: datetime = Field(default_factory=datetime.utcnow)
     updated_at: datetime = Field(default_factory=datetime.utcnow)
 

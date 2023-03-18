@@ -1,6 +1,6 @@
 FROM tiangolo/uvicorn-gunicorn:python3.9
 
-RUN apt-get update && apt-get install -y fluidsynth
+RUN apt-get update && apt-get install -y fluidsynth && apt-get install -y abcmidi
 
 COPY requirements.txt requirements.txt
 RUN pip install --no-cache-dir -r requirements.txt

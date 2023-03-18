@@ -19,9 +19,9 @@ export const Logo = () => {
           alignSelf={"center"}
           bg={{
             linearGradient: {
-              colors: ["#1982FC", "#316dca"],
-              start: [0, 1],
               end: [1, 1],
+              start: [0, 1],
+              colors: ["#1982FC", "#316dca"],
             },
           }}
         />
