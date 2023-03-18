@@ -31,9 +31,9 @@ export const Navigation = () => (
         headerShown: false,
       }}
     >
-      <Stack.Screen name="SongCreate" component={SongCreateScreen} />
-      <Stack.Screen name="SongDetail" component={SongDetailScreen} />
+      {/* <Stack.Screen name="SongCreate" component={SongCreateScreen} /> */}
       <Stack.Screen name="SongList" component={SongListScreen} />
+      <Stack.Screen name="SongDetail" component={SongDetailScreen} />
     </Stack.Navigator>
   </NavigationContainer>
 );
