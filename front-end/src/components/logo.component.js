@@ -8,7 +8,7 @@ export const Logo = () => {
   return (
     <Pressable
       onPress={() => {
-        navigation.pusha("SongList");
+        navigation.push("SongList");
       }}
     >
       <HStack alignItems={"center"} space={"xs"}>
