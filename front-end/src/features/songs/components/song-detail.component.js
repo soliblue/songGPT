@@ -7,6 +7,7 @@ import { Markdown } from "src/components/markdown.component";
 import { GradientBackground } from "src/components/gradient-background.component";
 import { SongDetailPlayer } from "src/features/songs/components/song-detail-player.component";
 import { SongDetailDownload } from "src/features/songs/components/song-detail-download.component";
+import { SongDetailMusicSheet } from "./song-detail-music-sheet.component";
 
 export const SongDetail = ({ song }) => {
   const navigation = useNavigation();
@@ -17,24 +18,20 @@ export const SongDetail = ({ song }) => {
       m={3}
       space={3}
       shadow={1}
-      width={400}
+      width={[300, 400]}
       borderRadius="md"
       justifyContent="space-between"
     >
-      <ScrollView
-        p={2}
-        height={150}
-        borderRadius="md"
-        bg="rgba(255,255,255,0.15)"
-      >
-        <Text>{song?.prompt}</Text>
-      </ScrollView>
-
       {song?.abc && (
-        <ScrollView height={200} borderRadius="md" bg="#263238">
-          <Markdown text={"```abc\n" + song?.abc + "\n````"} />
+        <ScrollView
+          height={150}
+          showsVerticalScrollIndicator={false}
+          showsHorizontalScrollIndicator={false}
+        >
+          <SongDetailMusicSheet abc={song?.abc} />
         </ScrollView>
       )}
+
       <HStack space={5} justifyContent={"center"} alignItems="center">
         <SongDetailPlayer songID={song?.id} />
         <IconButton
