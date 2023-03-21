@@ -1,4 +1,5 @@
 import os
+import re
 
 import openai
 
@@ -28,11 +29,16 @@ class SongGPT:
                 },
             ],
         )
-        abc = response["choices"][0]["message"]["content"]
+        response = response["choices"][0]["message"]["content"]
+        abc = (
+            re.search(r"<abc>\*?(.*?)\*?</abc>", response, flags=re.DOTALL)
+            .group(1)
+            .strip()
+        )
         abc_file_path = "./input.abc"
         with open(abc_file_path, "w") as f:
             f.write(abc)
-        return abc, abc_file_path
+        return response, abc, abc_file_path
 
     @staticmethod
     def abc_to_midi(abc_file_path: str) -> str:

@@ -13,7 +13,7 @@ async def create_song(payload: SongCreateInput):
     songGPT = SongGPT()
     # 1. Generate ABC using ChatGPT (LLM)
     log.info("Generating ABC...")
-    abc, abc_file_path = songGPT.generate_abc(
+    response, abc, abc_file_path = songGPT.generate_abc(
         system_message=payload.system_message,
         prompt=payload.prompt,
     )
@@ -25,12 +25,7 @@ async def create_song(payload: SongCreateInput):
     # 4. Save generated files / data
     songDao = SongsDAO()
     ## Create a new song in firestore
-    songID = songDao.create(
-        SongCreate(
-            **payload.dict(),
-            abc=abc,
-        )
-    )
+    songID = songDao.create(SongCreate(**payload.dict(), abc=abc, response=response))
     # upload all files to google cloud storage
     upload_file(abc_file_path, f"songs/{songID}", f"{songID}.abc", "text/vnd.abc")
     upload_file(midi_file_path, f"songs/{songID}", f"{songID}.mid", "audio/midi")
