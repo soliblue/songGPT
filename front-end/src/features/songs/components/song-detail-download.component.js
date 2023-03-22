@@ -18,7 +18,7 @@ export const SongDetailDownload = ({ songID }) => {
         return (
           <IconButton
             size="lg"
-            icon={<Icon as={Ionicons} name="ellipsis-vertical" />}
+            icon={<Icon as={Ionicons} name="download" />}
             {...triggerProps}
           />
         );

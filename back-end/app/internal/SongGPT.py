@@ -35,7 +35,7 @@ class SongGPT:
             .group(1)
             .strip()
         )
-        abc_file_path = "./input.abc"
+        abc_file_path = f"{os.getcwd()}/input.abc"
         with open(abc_file_path, "w") as f:
             f.write(abc)
         return response, abc, abc_file_path
@@ -45,7 +45,7 @@ class SongGPT:
         """
         Convert an ABC notation file to a MIDI file.
         """
-        midi_file_path = "./output.mid"
+        midi_file_path = f"{os.getcwd()}/output.mid"
         os.system(f"abc2midi {abc_file_path} -o {midi_file_path}")
         return midi_file_path
 
@@ -54,7 +54,7 @@ class SongGPT:
         """
         Convert a MIDI file to a WAV audio file.
         """
-        wav_file_path = "./output.wav"
+        wav_file_path = f"{os.getcwd()}/output.wav"
         soundfont_path = "app/internal/soundfont.sf2"
         os.system(
             f"fluidsynth -ni {soundfont_path} {midi_file_path} -F {wav_file_path} -r 44100"

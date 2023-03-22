@@ -1,8 +1,9 @@
 import React from "react";
-import { Popover, Pressable } from "native-base";
+import { Ionicons } from "@expo/vector-icons";
+import { Icon, IconButton, Popover } from "native-base";
 
-export const PressableWithPopover = ({
-  PressableChildren,
+export const IconButtonWithPopover = ({
+  iconName,
   PopoverHeader,
   PopoverBody,
 }) => {
@@ -10,9 +11,11 @@ export const PressableWithPopover = ({
     <Popover
       trigger={(triggerProps) => {
         return (
-          <Pressable {...props} {...triggerProps}>
-            {PressableChildren}
-          </Pressable>
+          <IconButton
+            size="lg"
+            {...triggerProps}
+            icon={<Icon name={iconName} as={Ionicons} />}
+          />
         );
       }}
     >

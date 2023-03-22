@@ -1,12 +1,13 @@
 import React from "react";
 import { Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
-import { HStack, Icon, IconButton, ScrollView } from "native-base";
+import { HStack, Icon, IconButton, ScrollView, Text } from "native-base";
 // internal
 import { GradientBackground } from "src/components/gradient-background.component";
+import { IconButtonWithModal } from "src/components/icon-button-with-modal.component";
 import { SongDetailPlayer } from "src/features/songs/components/song-detail-player.component";
 import { SongDetailDownload } from "src/features/songs/components/song-detail-download.component";
-import { SongDetailMusicSheet } from "./song-detail-music-sheet.component";
+import { SongDetailMusicSheet } from "src/features/songs/components/song-detail-music-sheet.component";
 
 export const SongDetail = ({ song }) => {
   const navigation = useNavigation();
@@ -41,6 +42,13 @@ export const SongDetail = ({ song }) => {
           }}
         />
         <SongDetailDownload songID={song?.id} />
+        <IconButtonWithModal
+          iconName="chatbox-ellipses"
+          Header={<Text>ChatGPT's response</Text>}
+          Body={
+            <Text>{song?.prompt + "\n\n" + (song?.response || song?.abc)}</Text>
+          }
+        />
       </HStack>
     </GradientBackground>
   );
