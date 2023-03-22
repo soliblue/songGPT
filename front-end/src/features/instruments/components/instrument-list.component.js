@@ -13,6 +13,24 @@ export const InstrumentList = ({ systemMessage, setSystemMessage }) => {
     channel: instrument.channel,
   }));
 
+  const customStyles = {
+    control: (base, state) => ({
+      ...base,
+      borderWidth: 0,
+      boxShadow: state.isFocused ? 0 : 0,
+      borderColor: "transparent",
+      "&:hover": {
+        borderColor: "transparent",
+      },
+    }),
+    menu: (base) => ({
+      ...base,
+      zIndex: 10000, // High zIndex to ensure it appears above other elements
+      position: "absolute",
+      backgroundColor: "white", // Set the background color to white
+    }),
+  };
+
   const handleChange = (selected) => {
     if (selected && selected.length > 0) {
       setSelectedInstruments(
@@ -46,6 +64,7 @@ export const InstrumentList = ({ systemMessage, setSystemMessage }) => {
     <Select
       isMulti
       options={options}
+      styles={customStyles}
       value={selectedOptions}
       onChange={handleChange}
       placeholder="Select instruments..."

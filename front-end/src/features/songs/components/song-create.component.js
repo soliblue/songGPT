@@ -101,6 +101,7 @@ export const SongCreate = ({ initialSystemMessage = defaultSystemMessage }) => {
 
         <Button
           // logic
+          zIndex={-100}
           onPress={onCreateSong}
           isLoading={createSong.isLoading}
           // styling
