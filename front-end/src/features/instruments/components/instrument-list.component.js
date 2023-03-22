@@ -64,6 +64,7 @@ export const InstrumentList = ({ systemMessage, setSystemMessage }) => {
     <Select
       isMulti
       options={options}
+      isClearable={false}
       styles={customStyles}
       value={selectedOptions}
       onChange={handleChange}
