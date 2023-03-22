@@ -15,20 +15,36 @@ class SongGPT:
         Generate an ABC notation file using ChatGPT based on the given prompt and system message.
         """
         # Create a ChatCompletion object for GPT-4
-        response = openai.ChatCompletion.create(
-            model="gpt-4",
-            user="songGPT",
-            messages=[
-                {
-                    "content": system_message,
-                    "role": "system",
-                },
-                {
-                    "content": prompt,
-                    "role": "user",
-                },
-            ],
-        )
+        try:
+            response = openai.ChatCompletion.create(
+                model="gpt-4",
+                user="songGPT",
+                messages=[
+                    {
+                        "content": system_message,
+                        "role": "system",
+                    },
+                    {
+                        "content": prompt,
+                        "role": "user",
+                    },
+                ],
+            )
+        except:
+            response = openai.ChatCompletion.create(
+                model="gpt-3.5-turbo",
+                user="songGPT",
+                messages=[
+                    {
+                        "content": system_message,
+                        "role": "system",
+                    },
+                    {
+                        "content": prompt,
+                        "role": "user",
+                    },
+                ],
+            )
         response = response["choices"][0]["message"]["content"]
         abc = (
             re.search(r"<abc>\*?(.*?)\*?</abc>", response, flags=re.DOTALL)
