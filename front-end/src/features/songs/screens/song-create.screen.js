@@ -26,7 +26,6 @@ export const SongCreateScreen = ({ route, navigation }) => {
 
   React.useEffect(() => {
     if (createSong.isSuccess && navigation) {
-      setPrompt("");
       navigation.navigate("SongDetail", { songID: createSong?.data?.data });
     }
   }, [createSong.isSuccess]);
