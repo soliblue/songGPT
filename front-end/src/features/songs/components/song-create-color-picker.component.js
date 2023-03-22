@@ -45,7 +45,7 @@ export const SongCreateColorPicker = ({ setPrompt }) => {
         }}
       >
         <IconButton
-          p={0.5}
+          p={0.75}
           onPress={() => setIsOpen(true)}
           icon={<Icon as={Ionicons} name="color-palette" />}
         />

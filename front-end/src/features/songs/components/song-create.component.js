@@ -4,11 +4,10 @@ import { Button, HStack, Input, VStack, Text } from "native-base";
 // internal hooks
 import { useCreateSong } from "src/features/songs/hooks/useCreateSong";
 // internal components
-import { AboutUs } from "src/components/about-us.component";
+import { SongCreateColorPicker } from "./song-create-color-picker.component";
+import { InstrumentList } from "src/features/instruments/components/instrument-list.component";
 import { defaultSystemMessage } from "src/features/songs/components/default-system-message.js";
 import { SongCreateSettings } from "src/features/songs/components/song-create-settings.component";
-import { InstrumentList } from "src/features/instruments/components/instrument-list.component";
-import { SongCreateColorPicker } from "./song-create-color-picker.component";
 
 export const SongCreate = ({ initialSystemMessage = defaultSystemMessage }) => {
   const navigation = useNavigation();
