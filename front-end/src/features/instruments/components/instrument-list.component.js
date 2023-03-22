@@ -63,7 +63,7 @@ export const InstrumentList = ({ systemMessage, setSystemMessage }) => {
 
   return (
     <VStack px={3} space={"xs"} zIndex={10000}>
-      <Text fontWeight={"semibold"}>Select your instruments:</Text>
+      {/* <Text fontWeight={"semibold"}>Select your instruments:</Text> */}
       <Select
         isMulti
         options={options}
