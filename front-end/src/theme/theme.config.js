@@ -16,5 +16,35 @@ export const themeConfig = () => {
         900: "#f3f5f6",
       },
     },
+    fontConfig: {
+      Recursive: {
+        300: {
+          normal: "Recursive_300Light",
+        },
+        400: {
+          normal: "Recursive_400Regular",
+        },
+        500: {
+          normal: "Recursive_500Medium",
+        },
+        600: {
+          normal: "Recursive_600SemiBold",
+        },
+        700: {
+          normal: "Recursive_700Bold",
+        },
+        800: {
+          normal: "Recursive_800ExtraBold",
+        },
+        900: {
+          normal: "Recursive_900Black",
+        },
+      },
+    },
+    fonts: {
+      heading: "Recursive",
+      body: "Recursive",
+      mono: "Recursive",
+    },
   };
 };

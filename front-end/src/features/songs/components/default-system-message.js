@@ -4,8 +4,6 @@ To assign an instrument in ABC notation, use "%%MIDI program" after the voice (V
 
 Share your thought, action, and observation process in text. Provide the final ABC notation within <abc> and </abc> tags. Aim to capture user intent and use the given instruments.
 
-Unless the user specifies otherwise, the composition should only use a single instrument.
-
 Example Output:
 
 Thought: User seeks a soothing Piano-Violin melody.
