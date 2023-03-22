@@ -6,8 +6,8 @@ import { createStackNavigator } from "@react-navigation/stack";
 // internal
 import { appRoutesConfig } from "./route.config";
 import { SongListScreen } from "src/features/songs/screens/song-list.screen";
-import { SongCreateScreen } from "src/features/songs/screens/song-create.screen";
 import { SongDetailScreen } from "src/features/songs/screens/song-detail.screen";
+import { SongCreateScreen } from "src/features/songs/screens/song-create.screen";
 
 const Stack = createStackNavigator();
 
@@ -31,8 +31,8 @@ export const Navigation = () => (
         headerShown: false,
       }}
     >
-      {/* <Stack.Screen name="SongCreate" component={SongCreateScreen} /> */}
       <Stack.Screen name="SongList" component={SongListScreen} />
+      <Stack.Screen name="SongCreate" component={SongCreateScreen} />
       <Stack.Screen name="SongDetail" component={SongDetailScreen} />
     </Stack.Navigator>
   </NavigationContainer>

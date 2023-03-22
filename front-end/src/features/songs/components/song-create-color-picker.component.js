@@ -16,14 +16,13 @@ export const SongCreateColorPicker = ({ setPrompt }) => {
     <>
       <Modal isOpen={isOpen} onClose={setIsOpen}>
         <Modal.Content>
-          <Modal.CloseButton />
-          <Modal.Header>Choose a color</Modal.Header>
           <Modal.Body>
-            <VStack space={"lg"}>
+            <Modal.CloseButton />
+
+            <VStack space={"lg"} pt={10}>
               <Text>
-                Instead of entering text you can also just choose a color and we
-                will generate a unique music composition that matches this
-                color.
+                Pick a color based on how you feel, and our system will generate
+                a personalized soundtrack inspired by that choice
               </Text>
               <SliderPicker
                 color={selectedColor}
