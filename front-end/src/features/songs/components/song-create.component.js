@@ -1,14 +1,6 @@
 import React from "react";
 import { useNavigation } from "@react-navigation/native";
-import {
-  Button,
-  HStack,
-  Input,
-  VStack,
-  FormControl,
-  Text,
-  Box,
-} from "native-base";
+import { Button, HStack, Input, VStack, Text } from "native-base";
 // internal hooks
 import { useCreateSong } from "src/features/songs/hooks/useCreateSong";
 // internal components
@@ -16,6 +8,7 @@ import { AboutUs } from "src/components/about-us.component";
 import { defaultSystemMessage } from "src/features/songs/components/default-system-message.js";
 import { SongCreateSettings } from "src/features/songs/components/song-create-settings.component";
 import { InstrumentList } from "src/features/instruments/components/instrument-list.component";
+import { SongCreateColorPicker } from "./song-create-color-picker.component";
 
 export const SongCreate = ({ initialSystemMessage = defaultSystemMessage }) => {
   const navigation = useNavigation();
@@ -47,57 +40,50 @@ export const SongCreate = ({ initialSystemMessage = defaultSystemMessage }) => {
         alignItems={"center"}
         justifyContent="center"
       >
-        <VStack alignItems={"center"} space={"sm"} px={3}>
-          <InstrumentList
-            systemMessage={systemMessage}
-            setSystemMessage={setSystemMessage}
-          />
-
-          <Input
-            // logic
-            value={prompt}
-            maxLength={1000}
-            onChangeText={setPrompt}
-            // styling
-            py={5}
-            shadow={1}
-            size={"lg"}
-            width={"90%"}
-            borderWidth={1}
-            borderRadius="3xl"
-            numberOfLines={4}
-            variant="unstyled"
-            placeholder="Describe the song you want in as much detail as possible"
-            _hover={{
-              shadow: 5,
-            }}
-            _focus={{
-              shadow: 3,
-              placeholderTextColor: "gray.400",
-            }}
-            InputLeftElement={
-              <SongCreateSettings
-                systemMessage={systemMessage}
-                setSystemMessage={setSystemMessage}
-              />
-            }
-            InputRightElement={<AboutUs />}
-          />
-          <Text
-            maxWidth={400}
-            fontSize={"2xs"}
-            color={"gray.700"}
-            alignSelf={"center"}
-          >
-            Paste your favorite quote or poem and let our language model
-            generate a beautiful and original piece of music for you. Please
-            note, that right now we are only limited to using the{" "}
-            <Text fontWeight="semibold">
-              Piano, Violin, Cello, Strings, Viola, Sax, Guitar, Clarinet,
-              Xylophone & Flute
-            </Text>
-          </Text>
-        </VStack>
+        <InstrumentList
+          systemMessage={systemMessage}
+          setSystemMessage={setSystemMessage}
+        />
+        <Input
+          // logic
+          value={prompt}
+          maxLength={1000}
+          onChangeText={setPrompt}
+          // styling
+          py={5}
+          shadow={1}
+          size={"lg"}
+          width={"90%"}
+          borderWidth={1}
+          borderRadius="3xl"
+          numberOfLines={4}
+          variant="unstyled"
+          placeholder="Describe the song you want in as much detail as possible"
+          _hover={{
+            shadow: 5,
+          }}
+          _focus={{
+            shadow: 3,
+            placeholderTextColor: "gray.400",
+          }}
+          InputLeftElement={
+            <SongCreateSettings
+              systemMessage={systemMessage}
+              setSystemMessage={setSystemMessage}
+            />
+          }
+          InputRightElement={<SongCreateColorPicker setPrompt={setPrompt} />}
+        />
+        <Text
+          px={5}
+          maxWidth={400}
+          fontSize={"2xs"}
+          color={"gray.700"}
+          alignSelf={"center"}
+        >
+          Paste your favorite quote or poem and let our language model generate
+          a beautiful and original piece of music for you.
+        </Text>
 
         <Button
           // logic
@@ -124,6 +110,7 @@ export const SongCreate = ({ initialSystemMessage = defaultSystemMessage }) => {
         >
           Generate
         </Button>
+
         {createSong.isLoading && (
           <Text>This normally takes less than 60 seconds</Text>
         )}

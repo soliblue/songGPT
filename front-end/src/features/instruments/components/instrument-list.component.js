@@ -1,5 +1,6 @@
 import React from "react";
 import Select from "react-select";
+import { VStack, Text } from "native-base";
 import { instruments } from "src/features/instruments/instruments";
 
 export const InstrumentList = ({ systemMessage, setSystemMessage }) => {
@@ -61,14 +62,17 @@ export const InstrumentList = ({ systemMessage, setSystemMessage }) => {
   }));
 
   return (
-    <Select
-      isMulti
-      options={options}
-      isClearable={false}
-      styles={customStyles}
-      value={selectedOptions}
-      onChange={handleChange}
-      placeholder="Select instruments..."
-    />
+    <VStack px={3} space={"xs"} zIndex={10000}>
+      <Text fontWeight={"semibold"}>Select your instruments:</Text>
+      <Select
+        isMulti
+        options={options}
+        isClearable={false}
+        styles={customStyles}
+        value={selectedOptions}
+        onChange={handleChange}
+        placeholder="Select instruments..."
+      />
+    </VStack>
   );
 };

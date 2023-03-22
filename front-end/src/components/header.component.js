@@ -3,16 +3,20 @@ import { Linking } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { HStack, Button, Icon } from "native-base";
 import { Logo } from "src/components/logo.component";
+import { AboutUs } from "src/components/about-us.component";
 
 export const Header = () => (
   <HStack p={5} bg="gray.50" justifyContent={"center"}>
     <HStack
       flex={1}
       maxW={992}
-      justifyContent="space-between"
       alignItems="center"
+      justifyContent="space-between"
     >
-      <Logo />
+      <HStack space={1} alignItems="center">
+        <Logo />
+        <AboutUs />
+      </HStack>
 
       <Button
         bg="#316dca"

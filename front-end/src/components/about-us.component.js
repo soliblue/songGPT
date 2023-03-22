@@ -12,14 +12,14 @@ export const AboutUs = () => {
             borderRadius={"full"}
             bg={{
               linearGradient: {
-                colors: ["#1982FC", "#316dca"],
-                start: [0, 0],
                 end: [1, 0],
+                start: [0, 0],
+                colors: ["#1982FC", "#316dca"],
               },
             }}
           >
             <IconButton
-              p={1}
+              p={0.5}
               size="xs"
               icon={<Icon name="information-outline" as={Ionicons} />}
               // logic

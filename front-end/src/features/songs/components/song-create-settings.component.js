@@ -20,17 +20,9 @@ export const SongCreateSettings = ({ systemMessage, setSystemMessage }) => {
   return (
     <>
       <IconButton
-        ml={3}
+        ml={1}
         size={"sm"}
-        icon={
-          <Icon
-            ml={3}
-            size={"sm"}
-            as={Ionicons}
-            color="gray.400"
-            name="settings"
-          />
-        }
+        icon={<Icon as={Ionicons} color="gray.400" name="settings" />}
         onPress={() => setIsOpen(true)}
       />
       <Modal isOpen={isOpen} onClose={() => setIsOpen(false)}>
