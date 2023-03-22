@@ -11,17 +11,26 @@ import { Header } from "src/components/header.component";
 import { defaultSystemMessage } from "src/features/songs/components/default-system-message.js";
 import { InstrumentList } from "src/features/instruments/components/instrument-list.component";
 
-export const SongCreateScreen = ({ route }) => {
+export const SongCreateScreen = ({ route, navigation }) => {
   const [color, setColor] = React.useState("#aabbcc");
   const createSong = useCreateSong();
   const [systemMessage, setSystemMessage] =
     React.useState(defaultSystemMessage);
+
   const onCreateSong = () => {
     createSong.mutate({
       prompt: color,
       system_message: systemMessage,
     });
   };
+
+  React.useEffect(() => {
+    if (createSong.isSuccess && navigation) {
+      setPrompt("");
+      navigation.navigate("SongDetail", { songID: createSong?.data?.data });
+    }
+  }, [createSong.isSuccess]);
+
   return (
     <VStack flex={1} bg="white" shadow={3} width={"100%"}>
       <Header />
