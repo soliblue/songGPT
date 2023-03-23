@@ -38,4 +38,11 @@ async def list_instruments(soundfont: str):
 
     INSTR_REGEX = r"\n?(?P<bank>\d{3})-(?P<num>\d{3}) (?P<instrument>[\w\d\- ]+)\n"
     matches = [m.groupdict() for m in re.finditer(INSTR_REGEX, output)]
-    return matches
+    return [
+        {
+            "name": m["instrument"],
+            "bank": int(m["bank"]),
+            "program_number": int(m["num"]),
+        }
+        for m in matches
+    ]
