@@ -66,12 +66,11 @@ class SongGPT:
         return midi_file_path
 
     @staticmethod
-    def midi_to_wav(midi_file_path: str) -> str:
+    def midi_to_wav(midi_file_path: str, soundfont_path: str) -> str:
         """
         Convert a MIDI file to a WAV audio file.
         """
         wav_file_path = f"{os.getcwd()}/output.wav"
-        soundfont_path = "app/internal/soundfont.sf2"
         os.system(
             f"fluidsynth -ni {soundfont_path} {midi_file_path} -F {wav_file_path} -r 44100"
         )

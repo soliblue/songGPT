@@ -1,5 +1,5 @@
 # internal
-from app.routers import ping, songs
+from app.routers import ping, songs, soundfonts
 from dotenv import load_dotenv
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
@@ -24,7 +24,9 @@ def create_application() -> FastAPI:
     application.include_router(ping.router, prefix="", tags=["Ping"])
     # models following rest guidelines
     application.include_router(songs.router, prefix="/songs", tags=["Songs"])
-
+    application.include_router(
+        soundfonts.router, prefix="/soundfonts", tags=["Soundfonts"]
+    )
     return application
 
 

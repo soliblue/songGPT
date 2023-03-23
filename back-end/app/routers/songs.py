@@ -21,7 +21,9 @@ async def create_song(payload: SongCreateInput):
     # 2. Convert the ABC to MIDI using ABC2MIDI
     midi_file_path = songGPT.abc_to_midi(abc_file_path)
     # 3. Convert the MIDI file to a WAV file
-    wav_file_path = songGPT.midi_to_wav(midi_file_path)
+    wav_file_path = songGPT.midi_to_wav(
+        midi_file_path, f"app/data/soundfonts/{payload.soundfont}"
+    )
     # 4. Save generated files / data
     songDao = SongsDAO()
     ## Create a new song in firestore
