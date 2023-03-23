@@ -1,51 +1,69 @@
 import React from "react";
 import { Linking } from "react-native";
-import { HStack, Text, Pressable } from "native-base";
+import { HStack, Text, Pressable, VStack } from "native-base";
 
 export const Footer = () => (
-  <HStack py={3} bg="gray.50" justifyContent={"center"}>
-    <Text
-      fontSize={"2xs"}
-      color="black"
-      fontWeight={"semibold"}
-      letterSpacing="lg"
-    >
-      Made with ❤️ by{" "}
+  <VStack bg="gray.50" py={3} space={"sm"}>
+    <HStack justifyContent={"center"}>
       <Pressable
         onPress={() => {
-          Linking.openURL("https://twitter.com/Tanovski");
+          Linking.openURL("https://discord.gg/ArjurfDCCy");
         }}
       >
-        <Text>Jeffry</Text>
+        <Text
+          fontSize={"2xs"}
+          color="black"
+          fontWeight={"semibold"}
+          letterSpacing="lg"
+        >
+          Join our discord
+        </Text>
       </Pressable>
-      ,
-      <Pressable
-        onPress={() => {
-          Linking.openURL("https://twitter.com/SoliMouse");
-        }}
+    </HStack>
+    <HStack justifyContent={"center"}>
+      <Text
+        fontSize={"2xs"}
+        color="black"
+        fontWeight={"semibold"}
+        letterSpacing="lg"
       >
-        <Text> Soli</Text>
-      </Pressable>
-      ,
-      <Pressable
-        onPress={() => {
-          Linking.openURL(
-            "https://www.linkedin.com/in/hatem-soliman-12908a1b3/"
-          );
-        }}
-      >
-        <Text> Tommy </Text>
-      </Pressable>
-      &
-      <Pressable
-        onPress={() => {
-          Linking.openURL(
-            "https://www.linkedin.com/in/justin-dorber-370581130/"
-          );
-        }}
-      >
-        <Text> Justin</Text>
-      </Pressable>
-    </Text>
-  </HStack>
+        Made with ❤️ by{" "}
+        <Pressable
+          onPress={() => {
+            Linking.openURL("https://twitter.com/Tanovski");
+          }}
+        >
+          <Text>Jeffry</Text>
+        </Pressable>
+        ,
+        <Pressable
+          onPress={() => {
+            Linking.openURL("https://twitter.com/SoliMouse");
+          }}
+        >
+          <Text> Soli</Text>
+        </Pressable>
+        ,
+        <Pressable
+          onPress={() => {
+            Linking.openURL(
+              "https://www.linkedin.com/in/hatem-soliman-12908a1b3/"
+            );
+          }}
+        >
+          <Text> Tommy </Text>
+        </Pressable>
+        &
+        <Pressable
+          onPress={() => {
+            Linking.openURL(
+              "https://www.linkedin.com/in/justin-dorber-370581130/"
+            );
+          }}
+        >
+          <Text> Justin</Text>
+        </Pressable>
+      </Text>
+    </HStack>
+  </VStack>
 );
