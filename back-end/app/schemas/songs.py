@@ -16,6 +16,7 @@ class SongCreateInput(BaseModel):
         max_length=1000,
         description="The initial prompt provided by the user through the app.",
     )
+    soundfont: str = "FluidR3_GM.sf2"
 
 
 class SongCreate(SongCreateInput):
