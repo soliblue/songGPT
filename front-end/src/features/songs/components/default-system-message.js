@@ -19,12 +19,12 @@ L:1/8
 Q:1/4=80
 K:C
 V:1 name=Piano clef=treble
-%%MIDI program 1 0 % Piano
+%%MIDI program 1 0 0 % Piano
 |: C2E2G2c2 | E2G2c2e2 :|
 V:2 name=Piano clef=bass
-%%MIDI program 2 0 % Piano
+%%MIDI program 2 0 0 % Piano
 |: E2G2B2e2 | G2B2d2g2 :|
 V:3 name=Violin clef=treble
-%%MIDI program 3 40 % Violin
+%%MIDI program 3 40 0 % Violin
 |: G2B2d2G2 | B2D2F2B2 :|
 </abc>`;
