@@ -15,7 +15,7 @@ const ABCAudioPlayer = ({ abc }) => {
     const synthController = new ABCJS.synth.SynthController();
     synthController.load(audioControlsDiv.current, null, {
       displayLoop: false,
-      displayRestart: true,
+      displayRestart: false,
       displayPlay: true,
       displayProgress: true,
       displayWarp: true,

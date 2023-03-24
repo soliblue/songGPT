@@ -3,9 +3,11 @@ import Select from "react-select";
 import { instruments } from "src/features/instruments/instruments";
 
 export const InstrumentList = ({ systemMessage, setSystemMessage }) => {
-  const [selectedInstruments, setSelectedInstruments] = React.useState([
-    { name: "Alto Sax", channel: 65 },
-  ]);
+  const [selectedInstruments, setSelectedInstruments] = React.useState(
+    Array.from(instruments)
+      .sort(() => Math.random() - 0.5)
+      .slice(0, 5)
+  );
 
   const options = instruments.map((instrument) => ({
     value: instrument.name,
