@@ -39,13 +39,13 @@ export const SongDetailDownload = ({ songID }) => {
         >
           MIDI
         </Menu.Item>
-        <Menu.Item
+        {/* <Menu.Item
           onPress={() => {
             Linking.openURL(wavFileURL);
           }}
         >
           WAV
-        </Menu.Item>
+        </Menu.Item> */}
       </Menu.OptionGroup>
     </Menu>
   );

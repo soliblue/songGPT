@@ -3024,6 +3024,11 @@ abcjs@^5.12.0:
     abcjs "5.11.0"
     midi "https://github.com/paulrosen/MIDI.js.git#abcjs"
 
+abcjs@^6.1.9:
+  version "6.1.9"
+  resolved "https://registry.yarnpkg.com/abcjs/-/abcjs-6.1.9.tgz#2258a44e65e60b4b70750233aea3921e2bc2f7df"
+  integrity sha512-vzGQeMQhn7c6mHNWLuT8TxXq/H7eoDjR0egSSiAC49l0L8jqGvEfeunq2AuqAmezjx5GI/Kd01WI327jw2pxog==
+
 abort-controller@^3.0.0:
   version "3.0.0"
   resolved "https://registry.yarnpkg.com/abort-controller/-/abort-controller-3.0.0.tgz#eaf54d53b62bae4138e809ca225c8439a6efb392"
