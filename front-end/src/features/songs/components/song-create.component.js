@@ -29,6 +29,14 @@ export const SongCreate = ({ initialSystemMessage = defaultSystemMessage }) => {
       system_message: systemMessage,
     });
   };
+  const placeHolders = [
+    "Slow Donkey...",
+    "Fast Monkey...",
+    "Deep Reflection...",
+    "Joyful times...",
+    "Sad times...",
+    "Tadadadada...",
+  ];
 
   return (
     <HStack justifyContent="center">
@@ -57,7 +65,9 @@ export const SongCreate = ({ initialSystemMessage = defaultSystemMessage }) => {
           borderRadius="3xl"
           numberOfLines={4}
           variant="unstyled"
-          placeholder="Describe the song you want in as much detail as possible"
+          placeholder={
+            placeHolders[Math.floor(Math.random() * placeHolders.length)]
+          }
           _hover={{
             shadow: 5,
           }}
