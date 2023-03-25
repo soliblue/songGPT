@@ -41,9 +41,9 @@ export const Header = () => (
         justifyContent="space-between"
       >
         <Text color="lightText">
-          Audio playback may not work on some mobile devices or browsers. For
-          iPhone users, ensure the device is unmuted by flipping the ringer
-          switch. For optimal experience, use Chrome or Edge on a desktop
+          Audio playback issues may occur on some mobile devices or browsers. To
+          resolve this on iPhones, ensure the device is unmuted by flipping the
+          ringer switch. For the best experience, we recommend using a desktop
           computer.
         </Text>
       </HStack>

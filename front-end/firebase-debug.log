@@ -1,0 +1,30 @@
+[debug] [2023-03-25T09:22:43.434Z] ----------------------------------------------------------------------
+[debug] [2023-03-25T09:22:43.434Z] Command:       /usr/local/bin/node /usr/local/bin/firebase deploy
+[debug] [2023-03-25T09:22:43.435Z] CLI Version:   11.24.1
+[debug] [2023-03-25T09:22:43.435Z] Platform:      darwin
+[debug] [2023-03-25T09:22:43.435Z] Node Version:  v16.15.0
+[debug] [2023-03-25T09:22:43.436Z] Time:          Sat Mar 25 2023 11:22:43 GMT+0200 (Eastern European Standard Time)
+[debug] [2023-03-25T09:22:43.436Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2023-03-25T09:22:43.469Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2023-03-25T09:22:43.470Z] > authorizing via signed-in user (soli@piasso.xyz)
+[debug] [2023-03-25T09:22:43.470Z] [iam] checking project songgpt-xyz for permissions ["firebase.projects.get","firebasehosting.sites.update"]
+[debug] [2023-03-25T09:22:43.470Z] > refreshing access token with scopes: []
+[debug] [2023-03-25T09:22:43.471Z] >>> [apiv2][query] POST https://www.googleapis.com/oauth2/v3/token [none]
+[debug] [2023-03-25T09:22:43.471Z] >>> [apiv2][body] POST https://www.googleapis.com/oauth2/v3/token [omitted]
+[debug] [2023-03-25T09:22:43.758Z] <<< [apiv2][status] POST https://www.googleapis.com/oauth2/v3/token 200
+[debug] [2023-03-25T09:22:43.758Z] <<< [apiv2][body] POST https://www.googleapis.com/oauth2/v3/token [omitted]
+[debug] [2023-03-25T09:22:43.765Z] >>> [apiv2][query] POST https://cloudresourcemanager.googleapis.com/v1/projects/songgpt-xyz:testIamPermissions [none]
+[debug] [2023-03-25T09:22:43.765Z] >>> [apiv2][(partial)header] POST https://cloudresourcemanager.googleapis.com/v1/projects/songgpt-xyz:testIamPermissions x-goog-quota-user=projects/songgpt-xyz
+[debug] [2023-03-25T09:22:43.765Z] >>> [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects/songgpt-xyz:testIamPermissions {"permissions":["firebase.projects.get","firebasehosting.sites.update"]}
+[debug] [2023-03-25T09:22:44.660Z] <<< [apiv2][status] POST https://cloudresourcemanager.googleapis.com/v1/projects/songgpt-xyz:testIamPermissions 200
+[debug] [2023-03-25T09:22:44.660Z] <<< [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects/songgpt-xyz:testIamPermissions {"permissions":["firebase.projects.get","firebasehosting.sites.update"]}
+[debug] [2023-03-25T09:22:44.661Z] >>> [apiv2][query] GET https://firebase.googleapis.com/v1beta1/projects/songgpt-xyz [none]
+[debug] [2023-03-25T09:22:45.317Z] <<< [apiv2][status] GET https://firebase.googleapis.com/v1beta1/projects/songgpt-xyz 200
+[debug] [2023-03-25T09:22:45.317Z] <<< [apiv2][body] GET https://firebase.googleapis.com/v1beta1/projects/songgpt-xyz {"projectId":"songgpt-xyz","projectNumber":"1028758828362","displayName":"SongGPT","name":"projects/songgpt-xyz","resources":{"hostingSite":"songgpt-xyz","storageBucket":"songgpt-xyz.appspot.com","locationId":"europe-west"},"state":"ACTIVE","etag":"1_bd712026-a0c6-414d-8b6d-ddd1976df0d8"}
+[info] 
+[info] === Deploying to 'songgpt-xyz'...
+[info] 
+[info] i  deploying hosting 
+[debug] [2023-03-25T09:22:45.318Z] >>> [apiv2][query] POST https://firebasehosting.googleapis.com/v1beta1/projects/-/sites/songgpt-xyz/versions [none]
+[debug] [2023-03-25T09:22:45.318Z] >>> [apiv2][body] POST https://firebasehosting.googleapis.com/v1beta1/projects/-/sites/songgpt-xyz/versions {"status":"CREATED","labels":{"deployment-tool":"cli-firebase"}}
