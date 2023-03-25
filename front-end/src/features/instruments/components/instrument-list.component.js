@@ -5,12 +5,15 @@ import { instruments } from "src/features/instruments/instruments";
 export const InstrumentList = ({ systemMessage, setSystemMessage }) => {
   const [selectedInstruments, setSelectedInstruments] = React.useState([
     { name: "Yamaha Grand Piano", channel: 0 },
-    { name: "Jazz Guitar", channel: 26 },
+    { name: "Electric Piano", channel: 2 },
     { name: "Violin", channel: 40 },
     { name: "Cello", channel: 42 },
     { name: "Harp", channel: 46 },
+    { name: "Clarinet", channel: 71 },
     { name: "Alto Sax", channel: 65 },
+    { name: "Oboe", channel: 68 },
     { name: "Flute", channel: 73 },
+    { name: "Steel Drums", channel: 114 },
   ]);
 
   const options = instruments.map((instrument) => ({
@@ -54,8 +57,8 @@ export const InstrumentList = ({ systemMessage, setSystemMessage }) => {
       .map((instrument) => `${instrument.name} (${instrument.channel})`)
       .join(", ");
     const updatedSystemMessage = systemMessage.replace(
-      /Use these instruments:[^.]*\./,
-      `Use these instruments: ${instrumentText}.`
+      /Instruments:[^.]*\./,
+      `Instruments: ${instrumentText}.`
     );
 
     setSystemMessage(updatedSystemMessage);
