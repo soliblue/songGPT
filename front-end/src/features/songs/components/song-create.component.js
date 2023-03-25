@@ -31,11 +31,15 @@ export const SongCreate = ({ initialSystemMessage = defaultSystemMessage }) => {
   };
   const placeHolders = [
     "Slow Donkey...",
-    "Fast Monkey...",
+    "Very Fast Monkey...",
     "Deep Reflection...",
     "Joyful times...",
     "Sad times...",
     "Tadadadada...",
+    "Winter is coming...",
+    "The sun is shining...",
+    "The rain is falling...",
+    "The wind is blowing...",
   ];
 
   return (
