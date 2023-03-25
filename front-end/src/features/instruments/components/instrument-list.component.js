@@ -13,7 +13,6 @@ export const InstrumentList = ({ systemMessage, setSystemMessage }) => {
     { name: "Alto Sax", channel: 65 },
     { name: "Oboe", channel: 68 },
     { name: "Flute", channel: 73 },
-    { name: "Steel Drums", channel: 114 },
   ]);
 
   const options = instruments.map((instrument) => ({
