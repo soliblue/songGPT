@@ -38,7 +38,7 @@ export const Footer = () => (
         ,
         <Pressable
           onPress={() => {
-            Linking.openURL("https://twitter.com/SoliMouse");
+            Linking.openURL("https://twitter.com/_xSoli");
           }}
         >
           <Text> Soli</Text>
