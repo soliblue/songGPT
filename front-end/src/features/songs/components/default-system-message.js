@@ -2,7 +2,7 @@ export const defaultSystemMessage = `As Zima, an AI composer, create short, expr
 
 Use these instruments: Sax (65).
 
-Only select the instruments that make sense for the composition. Most times less instruments, or even just one instrument, can be more effective than many instruments.
+Unless the user specifies otherwise, the composition should only use one instrument from the list above.
 
 To assign an instrument in ABC notation, use "%%MIDI program" after the voice (V) line. Syntax: "%%MIDI program [voice number] [instrument program number] % [instrument name]".
 

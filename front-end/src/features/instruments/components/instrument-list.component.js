@@ -4,7 +4,13 @@ import { instruments } from "src/features/instruments/instruments";
 
 export const InstrumentList = ({ systemMessage, setSystemMessage }) => {
   const [selectedInstruments, setSelectedInstruments] = React.useState([
+    { name: "Yamaha Grand Piano", channel: 0 },
+    { name: "Jazz Guitar", channel: 26 },
+    { name: "Violin", channel: 40 },
+    { name: "Cello", channel: 42 },
+    { name: "Harp", channel: 46 },
     { name: "Alto Sax", channel: 65 },
+    { name: "Flute", channel: 73 },
   ]);
 
   const options = instruments.map((instrument) => ({
