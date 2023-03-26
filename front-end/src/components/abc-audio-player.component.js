@@ -1,7 +1,7 @@
 import React from "react";
 import ABCJS from "abcjs";
 import "./abc-audio-player.css";
-import { ScrollView } from "native-base";
+import { ScrollView, VStack } from "native-base";
 
 const ABCAudioPlayer = ({ abc, color = "white" }) => {
   const notationDiv = React.useRef(null);
@@ -44,7 +44,7 @@ const ABCAudioPlayer = ({ abc, color = "white" }) => {
   };
 
   return (
-    <div>
+    <VStack space={3}>
       <ScrollView
         height={150}
         showsVerticalScrollIndicator={false}
@@ -62,7 +62,7 @@ const ABCAudioPlayer = ({ abc, color = "white" }) => {
         style={notesStyle}
         className={color !== "#FFFFFF" ? "inverse" : undefined}
       ></div>
-    </div>
+    </VStack>
   );
 };
 
