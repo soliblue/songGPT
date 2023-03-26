@@ -1,3 +1,10 @@
+.inverse * {
+	color: black !important;
+	fill: black !important;
+  stroke: black !important;
+	border: black !important;
+}
+
 .abcjs-container {
   width: 100%;
   overflow-x: auto;

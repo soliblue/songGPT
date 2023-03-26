@@ -11,9 +11,6 @@ import { SongDetail } from "src/features/songs/components/song-detail.component"
 export const SongDetailScreen = ({ route, navigation }) => {
   const { songID } = route.params;
   const song = useSong(songID);
-
-  console.debug(song?.data?.system_message);
-
   return (
     <VStack flex={1} bg="white" shadow={3} width={"100%"} space={"md"}>
       <Header />

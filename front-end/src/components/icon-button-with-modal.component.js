@@ -2,7 +2,7 @@ import React from "react";
 import { Ionicons } from "@expo/vector-icons";
 import { Icon, IconButton, Modal } from "native-base";
 
-export const IconButtonWithModal = ({ iconName, Header, Body }) => {
+export const IconButtonWithModal = ({ iconName, Header, Body, color }) => {
   const [isOpen, setIsOpen] = React.useState(false);
   const toggleModal = () => setIsOpen(!isOpen);
   return (
@@ -16,7 +16,7 @@ export const IconButtonWithModal = ({ iconName, Header, Body }) => {
       <IconButton
         size="lg"
         onPress={toggleModal}
-        icon={<Icon name={iconName} as={Ionicons} />}
+        icon={<Icon name={iconName} as={Ionicons} color={color} />}
       />
     </>
   );

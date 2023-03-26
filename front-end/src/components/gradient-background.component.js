@@ -1,7 +1,7 @@
 import React from "react";
 import { VStack } from "native-base";
 
-export const GradientBackground = ({ children, ...props }) => {
+export const GradientBackground = ({ colors, children, ...props }) => {
   const getRandomColor = () => {
     const colors = [
       "#F9D71C",
@@ -26,7 +26,7 @@ export const GradientBackground = ({ children, ...props }) => {
           end: [1, 0],
           start: [0, 0],
 
-          colors: [getRandomColor(), getRandomColor()],
+          colors: colors ? colors : [getRandomColor(), getRandomColor()],
         },
       }}
     >

@@ -3,7 +3,7 @@ import { Linking } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { Icon, IconButton, Menu } from "native-base";
 
-export const SongDetailDownload = ({ songID }) => {
+export const SongDetailDownload = ({ songID, color }) => {
   const getFileURL = (type) => {
     return `https://firebasestorage.googleapis.com/v0/b/songgpt-xyz.appspot.com/o/songs%2F${songID}%2F${songID}.${type}?alt=media`;
   };
@@ -18,7 +18,7 @@ export const SongDetailDownload = ({ songID }) => {
         return (
           <IconButton
             size="lg"
-            icon={<Icon as={Ionicons} name="download" />}
+            icon={<Icon as={Ionicons} name="download" color={color} />}
             {...triggerProps}
           />
         );

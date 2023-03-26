@@ -1,22 +1,24 @@
-import React, { useEffect, useRef } from "react";
+import React from "react";
 import ABCJS from "abcjs";
 import "./abc-audio-player.css";
 import { ScrollView } from "native-base";
 
-const ABCAudioPlayer = ({ abc }) => {
-  const notationDiv = useRef(null);
-  const audioControlsDiv = useRef(null);
+const ABCAudioPlayer = ({ abc, color = "white" }) => {
+  const notationDiv = React.useRef(null);
+  const audioControlsDiv = React.useRef(null);
 
-  useEffect(() => {
+  React.useEffect(() => {
     const visualObj = ABCJS.renderAbc(notationDiv.current, abc, {
+      staffwidth: 740,
+      add_classes: true,
       responsive: "resize",
     });
 
     const synthController = new ABCJS.synth.SynthController();
     synthController.load(audioControlsDiv.current, null, {
+      displayPlay: true,
       displayLoop: false,
       displayRestart: false,
-      displayPlay: true,
       displayProgress: true,
       displayWarp: true,
     });
@@ -33,6 +35,14 @@ const ABCAudioPlayer = ({ abc }) => {
     setTune();
   }, [abc]);
 
+  const notesStyle = {
+    width: "100%",
+    overflowX: "auto",
+    color: color,
+    fill: color,
+    stroke: color,
+  };
+
   return (
     <div>
       <ScrollView
@@ -42,12 +52,16 @@ const ABCAudioPlayer = ({ abc }) => {
       >
         <div
           ref={notationDiv}
+          style={notesStyle}
           className="abcjs-container"
-          style={{ width: "100%", overflowX: "auto" }}
         ></div>
       </ScrollView>
 
-      <div ref={audioControlsDiv}></div>
+      <div
+        ref={audioControlsDiv}
+        style={notesStyle}
+        className={color !== "#FFFFFF" ? "inverse" : undefined}
+      ></div>
     </div>
   );
 };

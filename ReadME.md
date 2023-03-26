@@ -53,7 +53,7 @@ K:Gmaj
 V:1 name=Harp clef=treble
 %%MIDI program 1 46 % Harp
 |: B2A2G2 | A2B2c2 :|
-</abc>
+</abc>w
 ```
 
 2. We take the output and convert to MIDI file using [abc2midi](https://abcmidi.sourceforge.io/)
