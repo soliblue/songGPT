@@ -2,23 +2,22 @@ import React from "react";
 import { Linking } from "react-native";
 import { HStack, Text, Pressable, VStack } from "native-base";
 
+const openURL = (url) => {
+  Linking.openURL(url);
+};
+
+const FooterLink = ({ url, children }) => (
+  <Pressable onPress={() => openURL(url)}>
+    <Text textDecoration="underline">{children}</Text>
+  </Pressable>
+);
+
 export const Footer = () => (
   <VStack bg="gray.50" py={3} space={"sm"}>
     <HStack justifyContent={"center"}>
-      <Pressable
-        onPress={() => {
-          Linking.openURL("https://discord.gg/ArjurfDCCy");
-        }}
-      >
-        <Text
-          fontSize={"2xs"}
-          color="black"
-          fontWeight={"semibold"}
-          letterSpacing="lg"
-        >
-          Join our discord
-        </Text>
-      </Pressable>
+      <FooterLink url="https://discord.gg/ArjurfDCCy">
+        Join our Discord
+      </FooterLink>
     </HStack>
     <HStack justifyContent={"center"}>
       <Text
@@ -28,41 +27,15 @@ export const Footer = () => (
         letterSpacing="lg"
       >
         Made with ❤️ by{" "}
-        <Pressable
-          onPress={() => {
-            Linking.openURL("https://twitter.com/Tanovski");
-          }}
-        >
-          <Text>Jeffry</Text>
-        </Pressable>
-        ,
-        <Pressable
-          onPress={() => {
-            Linking.openURL("https://twitter.com/_xSoli");
-          }}
-        >
-          <Text> Soli</Text>
-        </Pressable>
-        ,
-        <Pressable
-          onPress={() => {
-            Linking.openURL(
-              "https://www.linkedin.com/in/hatem-soliman-12908a1b3/"
-            );
-          }}
-        >
-          <Text> Tommy </Text>
-        </Pressable>
-        &
-        <Pressable
-          onPress={() => {
-            Linking.openURL(
-              "https://www.linkedin.com/in/justin-dorber-370581130/"
-            );
-          }}
-        >
-          <Text> Justin</Text>
-        </Pressable>
+        <FooterLink url="https://twitter.com/Tanovski">Jeffry</FooterLink>,{" "}
+        <FooterLink url="https://twitter.com/_xSoli">Soli</FooterLink>,{" "}
+        <FooterLink url="https://www.linkedin.com/in/hatem-soliman-12908a1b3/">
+          Tommy
+        </FooterLink>{" "}
+        &{" "}
+        <FooterLink url="https://www.linkedin.com/in/justin-dorber-370581130/">
+          Justin
+        </FooterLink>
       </Text>
     </HStack>
   </VStack>

@@ -27,13 +27,7 @@ export const SongDetail = ({ song }) => {
       <HStack space={5} justifyContent={"center"} alignItems="center">
         <IconButton
           size="lg"
-          icon={
-            <Icon
-              as={Ionicons}
-              name="open-outline"
-              color={complimentaryColor}
-            />
-          }
+          icon={<Icon as={Ionicons} name="open" color={complimentaryColor} />}
           onPress={() => {
             navigation.navigate("SongDetail", { songID: song?.id });
           }}

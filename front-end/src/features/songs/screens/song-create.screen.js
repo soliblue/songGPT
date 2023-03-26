@@ -39,7 +39,7 @@ export const SongCreateScreen = ({ route, navigation }) => {
       <VStack
         flex={1}
         bg={color}
-        space={"md"}
+        space={"2xl"}
         alignItems="center"
         justifyContent="center"
       >

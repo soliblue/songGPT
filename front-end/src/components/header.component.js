@@ -40,7 +40,7 @@ export const Header = () => (
         alignItems="center"
         justifyContent="space-between"
       >
-        <Text color="lightText">
+        <Text fontSize={"2xs"} color="lightText">
           If you're having trouble with audio playback on your mobile device,
           try flipping the ringer switch to make sure it's not muted.
         </Text>

@@ -2,7 +2,14 @@ import React from "react";
 import Select from "react-select";
 import { instruments } from "src/features/instruments/instruments";
 
-export const InstrumentList = ({ systemMessage, setSystemMessage }) => {
+export const InstrumentList = ({
+  systemMessage,
+  setSystemMessage,
+  inputTextColor = "black",
+  removeIconColor = "black",
+  selectedLabelColor = "#D5DEE8",
+  selectedLabelTextColor = "black",
+}) => {
   const [selectedInstruments, setSelectedInstruments] = React.useState([
     { name: "Yamaha Grand Piano", channel: 0 },
     { name: "Electric Piano", channel: 2 },
@@ -32,14 +39,36 @@ export const InstrumentList = ({ systemMessage, setSystemMessage }) => {
       "&:hover": {
         borderColor: "transparent",
       },
+      color: inputTextColor,
     }),
     menu: (base) => ({
       ...base,
-      zIndex: 10000, // High zIndex to ensure it appears above other elements
-      backgroundColor: "white", // Set the background color to white
+      padding: 5,
+      zIndex: 10000,
+      backgroundColor: "white", // Set the menu background color with some transparency
+      backdropFilter: "blur(25px)", // Add a blur effect to the menu
+      opacity: 0.9, // Set the opacity of the menu
+    }),
+    multiValue: (base) => ({
+      ...base,
+      opacity: 0.5,
+      backgroundColor: selectedLabelColor, // Set the background color of the selected labels with some transparency
+    }),
+    multiValueLabel: (base) => ({
+      ...base,
+      padding: 8,
+      color: selectedLabelTextColor,
+    }),
+    multiValueRemove: (base) => ({
+      ...base,
+      color: removeIconColor,
+      cursor: "pointer",
+      "&:hover": {
+        color: removeIconColor,
+        backgroundColor: "transparent",
+      },
     }),
   };
-
   const handleChange = (selected) => {
     if (selected && selected.length > 0) {
       setSelectedInstruments(
