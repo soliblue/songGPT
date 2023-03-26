@@ -22,7 +22,7 @@ export const SongCreateScreen = ({ route, navigation }) => {
 
   const onCreateSong = () => {
     createSong.mutate({
-      prompt: color,
+      prompt: "Color (hexcode): " + color,
       system_message: systemMessage,
     });
   };
