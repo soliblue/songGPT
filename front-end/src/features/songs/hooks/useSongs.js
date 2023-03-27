@@ -18,7 +18,8 @@ export const useSongs = (itemsLimit = 6) => {
     ({ pageParam }) => {
       const baseQuery = query(
         collection(firestore, "songs"),
-        orderBy("created_at", "desc"),
+        orderBy("created_at"),
+        orderBy("is_featured"),
         limit(itemsLimit)
       );
       if (pageParam) {

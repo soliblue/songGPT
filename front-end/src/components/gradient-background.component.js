@@ -19,17 +19,7 @@ export const GradientBackground = ({ colors, children, ...props }) => {
     return colors[index];
   };
   return (
-    <VStack
-      {...props}
-      bg={{
-        linearGradient: {
-          end: [1, 0],
-          start: [0, 0],
-
-          colors: colors ? colors : [getRandomColor(), getRandomColor()],
-        },
-      }}
-    >
+    <VStack {...props} bg={colors ? colors[0] : getRandomColor()}>
       {children}
     </VStack>
   );
