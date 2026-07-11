@@ -44,19 +44,19 @@ esac
 command -v abc2midi >/dev/null 2>&1 || fail "abc2midi is installed"
 ok "abc2midi is installed"
 
-if [ "${SONGGPT_GENERATOR:-codex}" = "claude" ]; then
-  command -v "${CLAUDE_BIN:-claude}" >/dev/null 2>&1 || fail "Claude CLI is installed"
-  ok "Claude CLI is installed"
-else
-  command -v "${CODEX_BIN:-codex}" >/dev/null 2>&1 || fail "Codex CLI is installed"
-  ok "Codex CLI is installed"
-  [ "${CODEX_MODEL:-gpt-5.6-sol}" = "gpt-5.6-sol" ] ||
-    fail "CODEX_MODEL is gpt-5.6-sol"
-  ok "CODEX_MODEL is gpt-5.6-sol"
-  [ "${CODEX_REASONING_EFFORT:-high}" = "high" ] ||
-    fail "CODEX_REASONING_EFFORT is high"
-  ok "CODEX_REASONING_EFFORT is high"
-fi
+command -v "${CODEX_BIN:-codex}" >/dev/null 2>&1 || fail "Codex CLI is installed"
+ok "Codex CLI is installed"
+command -v "${CLAUDE_BIN:-claude}" >/dev/null 2>&1 || fail "Claude CLI is installed"
+ok "Claude CLI is installed"
+[ "${CODEX_MODEL:-gpt-5.6-sol}" = "gpt-5.6-sol" ] ||
+  fail "CODEX_MODEL is gpt-5.6-sol"
+ok "CODEX_MODEL is gpt-5.6-sol"
+[ "${CODEX_REASONING_EFFORT:-high}" = "high" ] ||
+  fail "CODEX_REASONING_EFFORT is high"
+ok "CODEX_REASONING_EFFORT is high"
+[ "${CLAUDE_MODEL:-claude-opus-4-8}" = "claude-opus-4-8" ] ||
+  fail "CLAUDE_MODEL is claude-opus-4-8"
+ok "CLAUDE_MODEL is claude-opus-4-8"
 
 systemctl --user is-enabled "$SERVICE_NAME" >/dev/null ||
   fail "$SERVICE_NAME is enabled"

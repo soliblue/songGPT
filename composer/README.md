@@ -13,13 +13,14 @@ export COMPOSER_TOKEN="<same secret configured in Cloudflare Pages>"
 export SONGGPT_GENERATOR="codex" # or "claude"
 export CODEX_MODEL="gpt-5.6-sol"
 export CODEX_REASONING_EFFORT="high"
+export CLAUDE_MODEL="claude-opus-4-8"
 
 python3 composer/songgpt_composer.py
 ```
 
-Codex generation uses GPT-5.6 Sol with high reasoning and a read-only sandbox.
-It cannot edit the workspace; the composer process handles ABC/MIDI rendering
-and uploads itself.
+Each song's requested model routes it to GPT-5.6 Sol with high reasoning and a
+read-only Codex sandbox, or Claude Opus 4.8 with safe mode and tools disabled.
+The composer process handles ABC/MIDI rendering and uploads itself.
 
 For a single smoke-test job:
 

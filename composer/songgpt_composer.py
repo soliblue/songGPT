@@ -36,6 +36,9 @@ OUTPUT_SCHEMA = {
     "additionalProperties": False,
 }
 
+SOL_MODEL = "openai/gpt-5.6-sol"
+OPUS_MODEL = "anthropic/claude-opus-4-8"
+
 
 def env(name, default=None):
     return os.environ.get(name, default)
@@ -124,7 +127,7 @@ def generate_with_claude(song):
     command = [
         env("CLAUDE_BIN", "claude"),
         "--model",
-        env("CLAUDE_MODEL", "sonnet"),
+        env("CLAUDE_MODEL", "claude-opus-4-8"),
         "--print",
         "--output-format",
         "json",
@@ -189,8 +192,17 @@ def generate_with_codex(song, workdir):
     return parse_generation(output_path.read_text(encoding="utf-8"))
 
 
+def generator_for_song(song):
+    requested_model = song.get("model")
+    if requested_model == SOL_MODEL:
+        return "codex"
+    if requested_model == OPUS_MODEL:
+        return "claude"
+    return env("SONGGPT_GENERATOR", "codex").lower()
+
+
 def generate_song(song, workdir):
-    generator = env("SONGGPT_GENERATOR", "codex").lower()
+    generator = generator_for_song(song)
     if generator == "claude":
         return generate_with_claude(song)
     if generator == "codex":
@@ -198,31 +210,31 @@ def generate_song(song, workdir):
     raise RuntimeError("SONGGPT_GENERATOR must be 'claude' or 'codex'.")
 
 
-def model_provenance():
-    generator = env("SONGGPT_GENERATOR", "codex").lower()
+def model_provenance(song):
+    generator = generator_for_song(song)
     if generator == "codex":
         return f'openai/{env("CODEX_MODEL", "gpt-5.6-sol")}'
-    return f'anthropic/{env("CLAUDE_MODEL", "sonnet")}'
+    return f'anthropic/{env("CLAUDE_MODEL", "claude-opus-4-8")}'
 
 
 def check_environment():
     errors = []
     generator = env("SONGGPT_GENERATOR", "codex").lower()
-    generator_bin = (
-        env("CLAUDE_BIN", "claude")
-        if generator == "claude"
-        else env("CODEX_BIN", "codex")
-    )
 
     print(f"API base: {api_base()}")
     print(f"Generator: {generator}")
 
     if generator not in {"claude", "codex"}:
         errors.append("SONGGPT_GENERATOR must be 'claude' or 'codex'.")
-    elif shutil.which(generator_bin):
-        print(f"Generator binary: {generator_bin}")
-    else:
-        errors.append(f"Generator binary not found: {generator_bin}")
+
+    for label, generator_bin in (
+        ("Codex", env("CODEX_BIN", "codex")),
+        ("Claude", env("CLAUDE_BIN", "claude")),
+    ):
+        if shutil.which(generator_bin):
+            print(f"{label} binary: {generator_bin}")
+        else:
+            errors.append(f"{label} binary not found: {generator_bin}")
 
     if env("COMPOSER_TOKEN"):
         print("Composer token: configured")
@@ -289,7 +301,7 @@ def complete_song(song, generation, midi_path):
             "response": generation["response"],
             "abc": generation["abc"],
             "score": json.dumps(generation.get("score") or {}),
-            "model": model_provenance(),
+            "model": model_provenance(song),
         },
         files={"mid": midi_path},
     )

@@ -35,7 +35,8 @@ Production:
 
 ## How It Works
 
-1. The React app creates a queued song row through `/api/songs`.
+1. The React app creates a queued song row through `/api/songs`, including the
+   selected Sol or Opus model.
 2. D1 stores the prompt, system message, status, and finished ABC/response text.
 3. The composer worker polls `/api/composer/claim` using `COMPOSER_TOKEN`.
 4. The worker runs Claude or Codex CLI with a JSON schema requiring `response`,
@@ -44,6 +45,10 @@ Production:
    back through `/api/composer/:id/complete`.
 6. R2 stores generated `.abc` and `.mid` files. The app reads them from
    `/api/songs/:id/files/:type`.
+
+Song creation is capped at 3 requests per client per hour, 3 pending jobs, and
+250 total jobs per UTC day. Client addresses are salted and hashed before the
+rate-limit key is stored in D1.
 
 ## Firebase Migration
 
@@ -144,13 +149,15 @@ export COMPOSER_TOKEN="<same secret configured in Cloudflare>"
 export SONGGPT_GENERATOR="codex" # or "claude"
 export CODEX_MODEL="gpt-5.6-sol"
 export CODEX_REASONING_EFFORT="high"
+export CLAUDE_MODEL="claude-opus-4-8"
 
 python3 composer/songgpt_composer.py
 ```
 
-Codex generation uses GPT-5.6 Sol with high reasoning in a read-only sandbox.
-SongGPT only needs text generation here; local rendering and uploads are
-handled by the composer process.
+Each queued song selects either GPT-5.6 Sol with high reasoning in a read-only
+Codex sandbox or Claude Opus 4.8 in safe mode with tools disabled. SongGPT only
+needs text generation here; local rendering and uploads are handled by the
+composer process.
 
 For continuous operation on a local machine or VPS, use
 `scripts/install-composer-service.sh` and keep the real `COMPOSER_TOKEN` in the

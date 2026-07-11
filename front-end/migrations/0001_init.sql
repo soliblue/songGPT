@@ -3,7 +3,6 @@ CREATE TABLE IF NOT EXISTS songs (
   system_message TEXT NOT NULL,
   prompt TEXT NOT NULL,
   soundfont TEXT NOT NULL DEFAULT 'FluidR3_GM.sf2',
-  model TEXT NOT NULL DEFAULT 'local-cli',
   status TEXT NOT NULL DEFAULT 'queued',
   abc TEXT,
   response TEXT,

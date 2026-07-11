@@ -5,7 +5,10 @@
   "pages_build_output_dir": "dist",
   "vars": {
     "ALLOWED_ORIGIN": "https://songgpt.soli.blue",
-    "DAILY_SONG_LIMIT": "25"
+    "DAILY_SONG_LIMIT": "250",
+    "MAX_PENDING_SONGS": "3",
+    "RATE_LIMIT_REQUESTS": "3",
+    "RATE_LIMIT_WINDOW_SECONDS": "3600"
   },
   "d1_databases": [
     {

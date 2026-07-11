@@ -188,6 +188,13 @@ function checkRepoInvariants() {
     ),
     "Wrangler config binds R2 songgpt-files as SONG_FILES",
   );
+  assert(
+    wrangler.vars?.DAILY_SONG_LIMIT === "250" &&
+      wrangler.vars?.MAX_PENDING_SONGS === "3" &&
+      wrangler.vars?.RATE_LIMIT_REQUESTS === "3" &&
+      wrangler.vars?.RATE_LIMIT_WINDOW_SECONDS === "3600",
+    "Wrangler config enforces free-tier generation limits",
+  );
 
   const composer = read("composer/songgpt_composer.py");
   assert(
@@ -203,10 +210,29 @@ function checkRepoInvariants() {
   );
   assert(
     composer.includes('"gpt-5.6-sol"') &&
+      composer.includes('"anthropic/claude-opus-4-8"') &&
+      composer.includes("generator_for_song") &&
       composer.includes('"CODEX_REASONING_EFFORT"') &&
       composer.includes("openai/") &&
       composer.includes('"read-only"'),
-    "Codex composer records GPT-5.6 Sol provenance with explicit reasoning in read-only mode",
+    "composer routes Sol and Opus jobs with explicit model provenance",
+  );
+
+  const createSongs = read("front-end/functions/api/songs/index.js");
+  assert(
+    createSongs.includes("generation_rate_limits") &&
+      createSongs.includes("MAX_PENDING_SONGS") &&
+      createSongs.includes("CF-Connecting-IP") &&
+      createSongs.includes("allowedModels"),
+    "song creation has hashed per-client, queue, and model guards",
+  );
+
+  const app = read("front-end/src/App.jsx");
+  assert(
+    app.includes('label: "Sol"') &&
+      app.includes('label: "Opus"') &&
+      app.includes('aria-label="Composition model"'),
+    "composer UI exposes the Sol and Opus selector accessibly",
   );
 
   assertTrackedAndNotIgnored("front-end/src/data/defaultSystemMessage.js");
@@ -214,6 +240,7 @@ function checkRepoInvariants() {
   assertTrackedAndNotIgnored("scripts/install-composer-service.sh");
   assertTrackedAndNotIgnored("scripts/check-composer-service.sh");
   assertTrackedAndNotIgnored("scripts/check-decommissioned-services.sh");
+  assertTrackedAndNotIgnored("front-end/migrations/0003_add_generation_rate_limits.sql");
   assertExecutable("scripts/install-composer-service.sh");
   assertExecutable("scripts/check-composer-service.sh");
   assertExecutable("scripts/check-decommissioned-services.sh");

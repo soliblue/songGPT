@@ -62,6 +62,21 @@ const defaultInstruments = [
 
 const generationSteps = ["Queued", "Composing", "Rendering", "Ready"];
 
+const composerModels = [
+  {
+    value: "openai/gpt-5.6-sol",
+    label: "Sol",
+    title: "GPT-5.6 Sol with high reasoning",
+  },
+  {
+    value: "anthropic/claude-opus-4-8",
+    label: "Opus",
+    title: "Claude Opus 4.8",
+  },
+];
+
+const defaultComposerModel = composerModels[0].value;
+
 const hashIndex = (value = "") =>
   [...value].reduce((total, char) => total + char.charCodeAt(0), 0) % palette.length;
 
@@ -281,6 +296,7 @@ function SongDetailScreen() {
 function ColorCreateScreen() {
   const [color, setColor] = React.useState(() => randomHexColor());
   const [systemMessage, setSystemMessage] = React.useState(defaultSystemMessage);
+  const [model, setModel] = React.useState(defaultComposerModel);
   const navigate = useNavigate();
   const queryClient = useQueryClient();
   const complementary = getComplementaryColor(color);
@@ -296,6 +312,15 @@ function ColorCreateScreen() {
     <main className="color-screen" style={{ backgroundColor: color, color: complementary }}>
       <HexColorPicker color={color} onChange={setColor} />
       <InstrumentList systemMessage={systemMessage} setSystemMessage={setSystemMessage} />
+      <ModelSelector
+        value={model}
+        onChange={setModel}
+        style={{
+          "--model-selector-color": complementary,
+          "--model-selector-active-bg": complementary,
+          "--model-selector-active-color": color,
+        }}
+      />
       <button
         className="generate-button color-generate"
         type="button"
@@ -304,6 +329,7 @@ function ColorCreateScreen() {
           mutation.mutate({
             prompt: `Color (hexcode): ${color}`,
             system_message: systemMessage,
+            model,
           })
         }
         style={{ color: complementary, borderColor: complementary }}
@@ -323,6 +349,7 @@ function ColorCreateScreen() {
 function SongCreate({ initialSystemMessage = defaultSystemMessage }) {
   const [prompt, setPrompt] = React.useState("");
   const [systemMessage, setSystemMessage] = React.useState(initialSystemMessage);
+  const [model, setModel] = React.useState(defaultComposerModel);
   const placeholder = React.useMemo(
     () => placeholders[Math.floor(Math.random() * placeholders.length)],
     [],
@@ -341,6 +368,7 @@ function SongCreate({ initialSystemMessage = defaultSystemMessage }) {
   return (
     <section className="composer" aria-label="Create a song">
       <InstrumentList systemMessage={systemMessage} setSystemMessage={setSystemMessage} />
+      <ModelSelector value={model} onChange={setModel} />
       <div className="prompt-shell">
         <SettingsModal systemMessage={systemMessage} setSystemMessage={setSystemMessage} />
         <textarea
@@ -363,7 +391,7 @@ function SongCreate({ initialSystemMessage = defaultSystemMessage }) {
         className="generate-button"
         type="button"
         disabled={!prompt || mutation.isPending}
-        onClick={() => mutation.mutate({ prompt, system_message: systemMessage })}
+        onClick={() => mutation.mutate({ prompt, system_message: systemMessage, model })}
       >
         {mutation.isPending ? "Queueing..." : "Generate"}
       </button>
@@ -375,6 +403,34 @@ function SongCreate({ initialSystemMessage = defaultSystemMessage }) {
       ) : null}
       {mutation.error ? <p className="error-note">{mutation.error.message}</p> : null}
     </section>
+  );
+}
+
+function ModelSelector({ value, onChange, style }) {
+  return (
+    <div
+      className="model-selector"
+      role="radiogroup"
+      aria-label="Composition model"
+      style={style}
+    >
+      {composerModels.map((model) => {
+        const selected = model.value === value;
+        return (
+          <button
+            key={model.value}
+            type="button"
+            role="radio"
+            aria-checked={selected}
+            className={selected ? "selected" : ""}
+            title={model.title}
+            onClick={() => onChange(model.value)}
+          >
+            {model.label}
+          </button>
+        );
+      })}
+    </div>
   );
 }
 

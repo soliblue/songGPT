@@ -464,6 +464,43 @@ a {
   z-index: 5;
 }
 
+.model-selector {
+  --model-selector-color: #4b5563;
+  --model-selector-active-bg: var(--blue);
+  --model-selector-active-color: #ffffff;
+  display: grid;
+  grid-template-columns: repeat(2, 72px);
+  width: 146px;
+  height: 34px;
+  padding: 2px;
+  border: 1px solid color-mix(in srgb, var(--model-selector-color) 22%, transparent);
+  border-radius: 8px;
+  color: var(--model-selector-color);
+  background: color-mix(in srgb, #ffffff 86%, transparent);
+}
+
+.model-selector button {
+  min-width: 0;
+  border: 0;
+  border-radius: 6px;
+  color: inherit;
+  background: transparent;
+  font: inherit;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.model-selector button.selected {
+  color: var(--model-selector-active-color);
+  background: var(--model-selector-active-bg);
+}
+
+.model-selector button:focus-visible {
+  outline: 2px solid var(--model-selector-color);
+  outline-offset: 1px;
+}
+
 .prompt-shell {
   width: min(720px, calc(100vw - 40px));
   min-height: 64px;
