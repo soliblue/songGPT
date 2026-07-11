@@ -157,9 +157,11 @@ def generate_with_codex(song, workdir):
     command = [
         env("CODEX_BIN", "codex"),
         "exec",
+        "--model",
+        env("CODEX_MODEL", "gpt-5.6-sol"),
+        "--config",
+        f'model_reasoning_effort="{env("CODEX_REASONING_EFFORT", "high")}"',
     ]
-    if env("CODEX_MODEL"):
-        command.extend(["--model", env("CODEX_MODEL")])
     command.extend(
         [
             "--sandbox",
@@ -188,7 +190,7 @@ def generate_with_codex(song, workdir):
 
 
 def generate_song(song, workdir):
-    generator = env("SONGGPT_GENERATOR", "claude").lower()
+    generator = env("SONGGPT_GENERATOR", "codex").lower()
     if generator == "claude":
         return generate_with_claude(song)
     if generator == "codex":
@@ -196,9 +198,16 @@ def generate_song(song, workdir):
     raise RuntimeError("SONGGPT_GENERATOR must be 'claude' or 'codex'.")
 
 
+def model_provenance():
+    generator = env("SONGGPT_GENERATOR", "codex").lower()
+    if generator == "codex":
+        return f'openai/{env("CODEX_MODEL", "gpt-5.6-sol")}'
+    return f'anthropic/{env("CLAUDE_MODEL", "sonnet")}'
+
+
 def check_environment():
     errors = []
-    generator = env("SONGGPT_GENERATOR", "claude").lower()
+    generator = env("SONGGPT_GENERATOR", "codex").lower()
     generator_bin = (
         env("CLAUDE_BIN", "claude")
         if generator == "claude"
@@ -280,6 +289,7 @@ def complete_song(song, generation, midi_path):
             "response": generation["response"],
             "abc": generation["abc"],
             "score": json.dumps(generation.get("score") or {}),
+            "model": model_provenance(),
         },
         files={"mid": midi_path},
     )

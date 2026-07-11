@@ -135,6 +135,10 @@ async function checkLiveUrls() {
   const cleanSongs = await fetchJson(`${apiBase}/songs/?limit=6`);
   assert(Array.isArray(cleanSongs.songs), "API hostname /songs returns a songs array");
   assert(cleanSongs.songs.length > 0, "API hostname /songs returns migrated data");
+  assert(
+    cleanSongs.songs.every((song) => song.status === "complete"),
+    "API hostname /songs only returns completed songs",
+  );
   assert(Boolean(cleanSongs.songs[0]?.model), "song rows expose a model field");
   assert(songsAreNewestFirst(cleanSongs.songs), "API hostname /songs sorts songs by recency");
 
@@ -196,6 +200,13 @@ function checkRepoInvariants() {
       composer.includes('"--tools"') &&
       !composer.includes('"dontAsk"'),
     "Claude composer runs without bypass permissions or tools",
+  );
+  assert(
+    composer.includes('"gpt-5.6-sol"') &&
+      composer.includes('"CODEX_REASONING_EFFORT"') &&
+      composer.includes("openai/") &&
+      composer.includes('"read-only"'),
+    "Codex composer records GPT-5.6 Sol provenance with explicit reasoning in read-only mode",
   );
 
   assertTrackedAndNotIgnored("front-end/src/data/defaultSystemMessage.js");

@@ -141,17 +141,16 @@ needed, and it never commits the generated dump.
 ```bash
 export SONGGPT_API_BASE="https://api.songgpt.soli.blue"
 export COMPOSER_TOKEN="<same secret configured in Cloudflare>"
-export SONGGPT_GENERATOR="claude" # or "codex"
-export CLAUDE_MODEL="sonnet"
-# Leave CODEX_MODEL unset to use ~/.codex/config.toml, or set a supported model.
+export SONGGPT_GENERATOR="codex" # or "claude"
+export CODEX_MODEL="gpt-5.6-sol"
+export CODEX_REASONING_EFFORT="high"
 
 python3 composer/songgpt_composer.py
 ```
 
-When `SONGGPT_GENERATOR=claude`, the composer runs Claude in non-interactive
-print mode with safe mode enabled and all Claude tools disabled. SongGPT only
-needs text generation here; local rendering and uploads are handled by the
-composer process.
+Codex generation uses GPT-5.6 Sol with high reasoning in a read-only sandbox.
+SongGPT only needs text generation here; local rendering and uploads are
+handled by the composer process.
 
 For continuous operation on a local machine or VPS, use
 `scripts/install-composer-service.sh` and keep the real `COMPOSER_TOKEN` in the

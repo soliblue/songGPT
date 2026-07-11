@@ -17,6 +17,7 @@ export const onRequestPost = async ({ env, request, params }) => {
   const response = String(form.get("response") || "");
   const abc = String(form.get("abc") || "");
   const score = String(form.get("score") || "");
+  const model = String(form.get("model") || "local-cli").slice(0, 120);
   const midi = form.get("mid");
 
   if (!response || !abc || !midi) {
@@ -35,6 +36,7 @@ export const onRequestPost = async ({ env, request, params }) => {
   await env.DB.prepare(
     `UPDATE songs
      SET status = 'complete',
+         model = ?,
          abc = ?,
          response = ?,
          score_json = ?,
@@ -46,6 +48,7 @@ export const onRequestPost = async ({ env, request, params }) => {
      WHERE id = ?`,
   )
     .bind(
+      model,
       abc,
       response,
       score || null,

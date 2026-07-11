@@ -8,6 +8,7 @@ export const onRequestGet = async ({ env, request }) => {
   const offset = Math.max(0, Number(url.searchParams.get("offset") || 0));
   const result = await env.DB.prepare(
     `SELECT * FROM songs
+     WHERE status = 'complete'
      ORDER BY created_at DESC, id DESC
      LIMIT ? OFFSET ?`,
   )

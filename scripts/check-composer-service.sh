@@ -32,9 +32,9 @@ ok "SONGGPT_API_BASE points at clean API hostname"
 [ -n "${COMPOSER_TOKEN:-}" ] || fail "COMPOSER_TOKEN is configured"
 ok "COMPOSER_TOKEN is configured"
 
-case "${SONGGPT_GENERATOR:-claude}" in
+case "${SONGGPT_GENERATOR:-codex}" in
   claude|codex)
-    ok "SONGGPT_GENERATOR is ${SONGGPT_GENERATOR:-claude}"
+    ok "SONGGPT_GENERATOR is ${SONGGPT_GENERATOR:-codex}"
     ;;
   *)
     fail "SONGGPT_GENERATOR must be claude or codex"
@@ -44,12 +44,18 @@ esac
 command -v abc2midi >/dev/null 2>&1 || fail "abc2midi is installed"
 ok "abc2midi is installed"
 
-if [ "${SONGGPT_GENERATOR:-claude}" = "claude" ]; then
+if [ "${SONGGPT_GENERATOR:-codex}" = "claude" ]; then
   command -v "${CLAUDE_BIN:-claude}" >/dev/null 2>&1 || fail "Claude CLI is installed"
   ok "Claude CLI is installed"
 else
   command -v "${CODEX_BIN:-codex}" >/dev/null 2>&1 || fail "Codex CLI is installed"
   ok "Codex CLI is installed"
+  [ "${CODEX_MODEL:-gpt-5.6-sol}" = "gpt-5.6-sol" ] ||
+    fail "CODEX_MODEL is gpt-5.6-sol"
+  ok "CODEX_MODEL is gpt-5.6-sol"
+  [ "${CODEX_REASONING_EFFORT:-high}" = "high" ] ||
+    fail "CODEX_REASONING_EFFORT is high"
+  ok "CODEX_REASONING_EFFORT is high"
 fi
 
 systemctl --user is-enabled "$SERVICE_NAME" >/dev/null ||

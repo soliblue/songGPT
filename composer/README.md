@@ -10,16 +10,16 @@ R2 through the protected composer endpoint.
 ```bash
 export SONGGPT_API_BASE="https://api.songgpt.soli.blue"
 export COMPOSER_TOKEN="<same secret configured in Cloudflare Pages>"
-export SONGGPT_GENERATOR="claude" # or "codex"
-export CLAUDE_MODEL="sonnet"
-# Leave CODEX_MODEL unset to use ~/.codex/config.toml, or set a supported model.
+export SONGGPT_GENERATOR="codex" # or "claude"
+export CODEX_MODEL="gpt-5.6-sol"
+export CODEX_REASONING_EFFORT="high"
 
 python3 composer/songgpt_composer.py
 ```
 
-Claude generation runs with safe mode enabled and `--tools ""`, so Claude can
-only return text. It does not get file, shell, or edit tools; the composer
-process handles ABC/MIDI rendering and uploads itself.
+Codex generation uses GPT-5.6 Sol with high reasoning and a read-only sandbox.
+It cannot edit the workspace; the composer process handles ABC/MIDI rendering
+and uploads itself.
 
 For a single smoke-test job:
 
