@@ -17,6 +17,7 @@ import {
   Piano,
   Plus,
   Settings,
+  Volume2,
   Wind,
   X,
 } from "lucide-react";
@@ -90,6 +91,22 @@ const instrumentIcon = (channel) => {
   if (channel === 40 || channel === 42) return Guitar;
   if ([65, 68, 71, 73].includes(channel)) return Wind;
   return Music2;
+};
+
+const isAppleMobileDevice = () =>
+  /iPad|iPhone|iPod/.test(navigator.userAgent) ||
+  (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
+
+const prepareAudioPlayback = () => {
+  try {
+    if (navigator.audioSession && "type" in navigator.audioSession) {
+      navigator.audioSession.type = "playback";
+      return true;
+    }
+  } catch (error) {
+    console.warn("Could not configure the browser audio session:", error);
+  }
+  return false;
 };
 
 const decorateWaveform = (audioElement) => {
@@ -761,6 +778,9 @@ function DownloadMenu({ songID }) {
 function ABCAudioPlayer({ abc, color = "#ffffff", compact = false }) {
   const notationRef = React.useRef(null);
   const audioRef = React.useRef(null);
+  const hintTimerRef = React.useRef(null);
+  const hintShownRef = React.useRef(false);
+  const [audioHintVisible, setAudioHintVisible] = React.useState(false);
 
   React.useEffect(() => {
     if (!notationRef.current || !audioRef.current || !abc) return undefined;
@@ -779,6 +799,30 @@ function ABCAudioPlayer({ abc, color = "#ffffff", compact = false }) {
       displayProgress: true,
       displayWarp: false,
     });
+    prepareAudioPlayback();
+    const handlePlaybackRequest = (event) => {
+      if (!event.target.closest(".abcjs-midi-start")) return;
+      prepareAudioPlayback();
+      if (!isAppleMobileDevice() || hintShownRef.current) return;
+
+      let hintAlreadyShown = false;
+      try {
+        hintAlreadyShown = sessionStorage.getItem("songgpt-audio-hint") === "shown";
+        sessionStorage.setItem("songgpt-audio-hint", "shown");
+      } catch {
+        // Private browsing can make session storage unavailable.
+      }
+      if (hintAlreadyShown) return;
+
+      hintShownRef.current = true;
+      window.clearTimeout(hintTimerRef.current);
+      setAudioHintVisible(true);
+      hintTimerRef.current = window.setTimeout(
+        () => setAudioHintVisible(false),
+        7000,
+      );
+    };
+    audioRef.current.addEventListener("click", handlePlaybackRequest, true);
     const midiBuffer = new ABCJS.synth.CreateSynth();
     let disposed = false;
     let removeWaveform = () => {};
@@ -794,6 +838,8 @@ function ABCAudioPlayer({ abc, color = "#ffffff", compact = false }) {
     return () => {
       disposed = true;
       removeWaveform();
+      window.clearTimeout(hintTimerRef.current);
+      audioRef.current?.removeEventListener("click", handlePlaybackRequest, true);
       notationRef.current && (notationRef.current.innerHTML = "");
       audioRef.current && (audioRef.current.innerHTML = "");
     };
@@ -811,6 +857,22 @@ function ABCAudioPlayer({ abc, color = "#ffffff", compact = false }) {
       <div className="abcjs-audio-shell">
         <div ref={audioRef} className="abcjs-audio" style={{ color }} />
       </div>
+      {audioHintVisible ? (
+        <div className="audio-hint" role="status">
+          <Volume2 size={18} aria-hidden="true" />
+          <span>
+            <strong>No sound?</strong> Turn off Silent Mode and raise the media
+            volume.
+          </span>
+          <button
+            type="button"
+            aria-label="Dismiss audio hint"
+            onClick={() => setAudioHintVisible(false)}
+          >
+            <X size={16} aria-hidden="true" />
+          </button>
+        </div>
+      ) : null}
     </div>
   );
 }

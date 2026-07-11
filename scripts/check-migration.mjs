@@ -243,6 +243,7 @@ function checkRepoInvariants() {
   assert(
     app.includes("abcjs-waveform") &&
       app.includes("MutationObserver") &&
+      app.includes('navigator.audioSession.type = "playback"') &&
       app.includes('displayRestart: false') &&
       app.includes('className="instrument-picker"') &&
       app.includes('className="instrument-add"'),
