@@ -25,14 +25,8 @@ OUTPUT_SCHEMA = {
             "type": "string",
             "description": "Valid ABC notation only, with no surrounding XML tags.",
         },
-        "score": {
-            "type": "object",
-            "description": "Structured quality and musical metadata, or an empty object.",
-            "properties": {},
-            "additionalProperties": False,
-        },
     },
-    "required": ["response", "abc", "score"],
+    "required": ["response", "abc"],
     "additionalProperties": False,
 }
 
@@ -112,6 +106,7 @@ def parse_generation(text):
         data = json.loads(data["result"])
     if "abc" not in data:
         raise RuntimeError("Generator did not return an abc field.")
+    data.setdefault("score", {})
     data["abc"] = extract_abc(data["abc"])
     if "<abc>" not in data.get("response", ""):
         data["response"] = f"{data.get('response', '')}\n\n<abc>\n{data['abc']}\n</abc>"

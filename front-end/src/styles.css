@@ -31,8 +31,11 @@
 html,
 body,
 #root {
+  width: 100%;
+  max-width: 100%;
   min-height: 100%;
   margin: 0;
+  overflow-x: clip;
 }
 
 body {
@@ -50,6 +53,9 @@ a {
 }
 
 .app {
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
@@ -120,11 +126,14 @@ a {
 .screen {
   flex: 1;
   width: 100%;
+  max-width: 100%;
+  min-width: 0;
   display: flex;
   flex-direction: column;
   justify-content: center;
   gap: 40px;
   padding: 34px 0 42px;
+  overflow-x: clip;
 }
 
 .song-rail {
@@ -233,8 +242,11 @@ a {
 
 .generation-panel {
   width: min(400px, calc(100vw - 32px));
+  max-width: calc(100% - 32px);
+  min-width: 0;
   margin: 12px;
   padding: 0;
+  overflow: hidden;
   color: #111827;
 }
 
@@ -243,6 +255,8 @@ a {
 }
 
 .detail-card-wrap .generation-panel {
+  width: min(400px, 100%);
+  max-width: 100%;
   margin-inline: auto;
 }
 
@@ -309,6 +323,7 @@ a {
 }
 
 .progress-header {
+  min-width: 0;
   display: grid;
   grid-template-columns: auto minmax(0, 1fr) auto;
   align-items: center;
@@ -348,6 +363,15 @@ a {
   font-size: 11px;
   font-weight: 500;
   line-height: 1.35;
+}
+
+.progress-copy span {
+  min-width: 0;
+  overflow: hidden;
+  overflow-wrap: anywhere;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
 }
 
 .progress-percent {
@@ -414,6 +438,27 @@ a {
   margin: 0;
 }
 
+.progress-footer {
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.progress-footer button {
+  flex: 0 0 auto;
+  padding: 0;
+  border: 0;
+  color: inherit;
+  background: transparent;
+  font-size: 11px;
+  font-weight: 750;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  cursor: pointer;
+}
+
 .generation-progress.failed .progress-track span {
   background: #991b1b;
 }
@@ -451,6 +496,8 @@ a {
 
 .composer {
   width: min(992px, 100%);
+  max-width: 100%;
+  min-width: 0;
   margin: 0 auto;
   display: flex;
   flex-direction: column;
@@ -461,6 +508,7 @@ a {
 
 .instrument-picker {
   width: min(900px, calc(100vw - 40px));
+  max-width: 100%;
   min-width: 0;
   display: flex;
   align-items: center;
@@ -469,6 +517,8 @@ a {
 }
 
 .instrument-picker-scroll {
+  width: 0;
+  max-width: 100%;
   min-width: 0;
   flex: 1 1 auto;
   display: flex;
@@ -675,6 +725,8 @@ a {
 }
 
 .hint {
+  width: min(400px, 100%);
+  max-width: 100%;
   max-width: 400px;
   margin: -8px 0 0;
   padding: 0 20px;
@@ -755,11 +807,17 @@ a {
 }
 
 .detail-card-wrap {
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
   display: flex;
   justify-content: center;
 }
 
 .detail-compose {
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
   display: grid;
   gap: 18px;
 }
@@ -900,6 +958,8 @@ a {
   font-family: inherit;
   font-size: 14px;
   line-height: 1.5;
+  overflow-wrap: anywhere;
+  word-break: break-word;
 }
 
 .abc-player {
@@ -1287,13 +1347,39 @@ a {
     padding-top: 22px;
   }
 
+  .detail-card-wrap {
+    padding-inline: 16px;
+  }
+
+  .detail-card-wrap .generation-panel {
+    margin: 0;
+  }
+
+  .composer {
+    padding-inline: 16px;
+  }
+
   .instrument-picker {
     width: 100%;
+    max-width: 100%;
     gap: 6px;
   }
 
   .instrument-picker-scroll {
+    width: 0;
     gap: 6px;
+  }
+
+  .progress-header {
+    grid-template-columns: 32px minmax(0, 1fr) auto;
+  }
+
+  .generation-progress.failed .progress-header {
+    grid-template-columns: 32px minmax(0, 1fr);
+  }
+
+  .progress-footer {
+    align-items: flex-start;
   }
 
   .instrument-chip,

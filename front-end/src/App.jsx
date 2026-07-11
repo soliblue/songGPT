@@ -186,13 +186,32 @@ function useNow(active) {
 
 function progressForSong(song, now) {
   if (song.status === "failed") {
+    const error = String(song.error || "").toLowerCase();
+    const composer = song.model?.includes("claude") ? "Opus" : "Sol";
+    const invalidOutput =
+      error.includes("structured_output") ||
+      error.includes("structured output") ||
+      error.includes("did not return an abc field") ||
+      error.includes("valid abc");
+    const timedOut = error.includes("timed out") || error.includes("timeout");
+    const busy =
+      error.includes("rate limit") ||
+      error.includes("too many requests") ||
+      error.includes("capacity");
+
     return {
-      title: "Generation stopped",
-      subtitle: song.error || "The composer could not finish this one.",
+      title: `${composer} needs another try`,
+      subtitle: invalidOutput
+        ? "The response did not contain a valid musical score."
+        : timedOut
+          ? "The composer took too long to finish this song."
+          : busy
+            ? "The composer is busy right now."
+            : "The composer could not finish this song.",
       percent: 100,
       activeStep: -1,
       failed: true,
-      meta: "Open the response bubble for details.",
+      meta: "Try again below or switch composers.",
     };
   }
 
@@ -665,9 +684,26 @@ function SongCard({ song, compact = false }) {
 
   if (song.status !== "complete") {
     return (
-      <section className="generation-panel" aria-label="Song generation progress">
-        <SongStatus song={song} compact={compact} />
-      </section>
+      <>
+        <section className="generation-panel" aria-label="Song generation progress">
+          <SongStatus
+            song={song}
+            compact={compact}
+            onDetails={song.error ? () => setResponseOpen(true) : undefined}
+          />
+        </section>
+        <Modal
+          open={responseOpen}
+          onClose={() => setResponseOpen(false)}
+          title="Generation details"
+        >
+          <pre className="response-text">
+            Model: {song.model || "unknown"}
+            {"\n\n"}
+            {song.error || "No technical details were provided."}
+          </pre>
+        </Modal>
+      </>
     );
   }
 
@@ -728,7 +764,7 @@ function SongCard({ song, compact = false }) {
   );
 }
 
-function SongStatus({ song, compact = false }) {
+function SongStatus({ song, compact = false, onDetails }) {
   const now = useNow(song.status === "queued" || song.status === "processing");
   const progress = progressForSong(song, now);
   const StatusIcon = progress.failed
@@ -750,7 +786,9 @@ function SongStatus({ song, compact = false }) {
           <strong>{progress.title}</strong>
           <span>{progress.subtitle}</span>
         </div>
-        <span className="progress-percent">{progress.percent}%</span>
+        {!progress.failed ? (
+          <span className="progress-percent">{progress.percent}%</span>
+        ) : null}
       </div>
       <div
         className="progress-track"
@@ -762,22 +800,31 @@ function SongStatus({ song, compact = false }) {
       >
         <span style={{ width: `${progress.percent}%` }} />
       </div>
-      <ol className="progress-steps">
-        {generationSteps.map((step, index) => {
-          const done = !progress.failed && index < progress.activeStep;
-          const active = !progress.failed && index === progress.activeStep;
-          return (
-            <li
-              key={step}
-              className={`${done ? "done" : ""} ${active ? "active" : ""}`}
-            >
-              <span>{done ? <CheckCircle2 size={12} /> : null}</span>
-              {step}
-            </li>
-          );
-        })}
-      </ol>
-      <p className="progress-meta">{progress.meta}</p>
+      {!progress.failed ? (
+        <ol className="progress-steps">
+          {generationSteps.map((step, index) => {
+            const done = index < progress.activeStep;
+            const active = index === progress.activeStep;
+            return (
+              <li
+                key={step}
+                className={`${done ? "done" : ""} ${active ? "active" : ""}`}
+              >
+                <span>{done ? <CheckCircle2 size={12} /> : null}</span>
+                {step}
+              </li>
+            );
+          })}
+        </ol>
+      ) : null}
+      <div className="progress-footer">
+        <p className="progress-meta">{progress.meta}</p>
+        {progress.failed && onDetails ? (
+          <button type="button" onClick={onDetails}>
+            Technical details
+          </button>
+        ) : null}
+      </div>
     </div>
   );
 }

@@ -17,10 +17,10 @@ const legacyProofSongId =
 const codexProofSongId =
   process.env.SONGGPT_CODEX_PROOF_SONG_ID ||
   process.env.SONGGPT_COMPOSER_PROOF_SONG_ID ||
-  "d608ac87-ca27-4ee7-86b7-0aee379cdb1d";
+  "5049059e-0f03-47d1-b9a3-92c5d2a65c9b";
 const claudeProofSongId =
   process.env.SONGGPT_CLAUDE_PROOF_SONG_ID ||
-  "6c640edd-8e2d-446a-bcfe-2ab2f2ce06c8";
+  "1f37bbdd-925e-4f92-8dae-102134ba0259";
 
 const failures = [];
 const passes = [];
@@ -113,11 +113,12 @@ function songsAreNewestFirst(songs) {
 
 async function checkComposerProof(songId, generator) {
   const song = await fetchJson(`${apiBase}/songs/${songId}`);
+  const expectedModel =
+    generator === "claude" ? /^anthropic\/claude-/i : /^openai\/gpt-/i;
   assert(song.status === "complete", `${generator} proof song is complete`);
   assert(
-    new RegExp(generator, "i").test(song.model || "") &&
-      /local-cli/i.test(song.model || ""),
-    `${generator} proof song exposes a local CLI model`,
+    expectedModel.test(song.model || ""),
+    `${generator} proof song exposes provider-qualified model provenance`,
   );
   assert(Boolean(song.abc), `${generator} proof song has ABC notation in D1`);
   assert(Boolean(song.response), `${generator} proof song has composer response text`);
@@ -209,6 +210,12 @@ function checkRepoInvariants() {
     "Claude composer runs without bypass permissions or tools",
   );
   assert(
+    composer.includes('"required": ["response", "abc"]') &&
+      composer.includes('data.setdefault("score", {})') &&
+      !composer.includes('"required": ["response", "abc", "score"]'),
+    "composer keeps the structured output schema minimal",
+  );
+  assert(
     composer.includes('"gpt-5.6-sol"') &&
       composer.includes('"anthropic/claude-opus-4-8"') &&
       composer.includes("generator_for_song") &&
@@ -228,6 +235,7 @@ function checkRepoInvariants() {
   );
 
   const app = read("front-end/src/App.jsx");
+  const css = read("front-end/src/styles.css").replace(/\s+/g, "");
   assert(
     app.includes('label: "Sol"') &&
       app.includes('label: "Opus"') &&
@@ -246,10 +254,18 @@ function checkRepoInvariants() {
       app.includes('navigator.audioSession.type = "playback"') &&
       app.includes("claimAudioPlayback") &&
       app.includes("audioPlayers.forEach") &&
+      app.includes("The response did not contain a valid musical score.") &&
+      app.includes('title="Generation details"') &&
       app.includes('displayRestart: false') &&
       app.includes('className="instrument-picker"') &&
       app.includes('className="instrument-add"'),
     "audio waveform and icon instrument picker are wired to real controls",
+  );
+  assert(
+    css.includes("overflow-x:clip") &&
+      css.includes("overflow-wrap:anywhere") &&
+      css.includes(".progress-footer"),
+    "failed generation details cannot widen the mobile viewport",
   );
   assert(
     !dependencyNames.includes("react-select"),
