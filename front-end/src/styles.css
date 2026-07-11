@@ -102,19 +102,6 @@ a {
   text-overflow: ellipsis;
 }
 
-.icon-chip {
-  width: 28px;
-  height: 28px;
-  flex: 0 0 auto;
-  display: inline-grid;
-  place-items: center;
-  border: 0;
-  border-radius: 999px;
-  color: #ffffff;
-  background: linear-gradient(90deg, var(--blue-dark), var(--blue));
-  cursor: pointer;
-}
-
 .github-button {
   min-height: 40px;
   display: inline-flex;
@@ -128,14 +115,6 @@ a {
   text-decoration: none;
   font-size: 14px;
   font-weight: 600;
-}
-
-.notice {
-  background: var(--blue);
-  color: #f8fafc;
-  padding: 20px;
-  font-size: 11px;
-  font-weight: 400;
 }
 
 .screen {
@@ -159,41 +138,51 @@ a {
   gap: 14px;
   overflow-x: auto;
   overflow-y: hidden;
-  padding: 4px 24px 18px;
+  padding: 8px 24px 18px;
+  scroll-padding-inline: 24px;
+  scroll-snap-type: x proximity;
 }
 
 .song-card,
 .song-skeleton,
 .detail-skeleton {
-  width: min(400px, calc(100vw - 32px));
-  min-width: min(400px, calc(100vw - 32px));
-  height: 285px;
-  min-height: 285px;
-  max-height: 285px;
-  margin: 12px;
-  padding: 20px;
-  border-radius: 6px;
-  box-shadow: var(--shadow-sm);
+  width: min(380px, calc(100vw - 32px));
+  min-width: min(380px, calc(100vw - 32px));
+  height: 350px;
+  min-height: 350px;
+  max-height: 350px;
+  margin: 4px;
+  padding: 18px;
+  border: 1px solid rgba(17, 24, 39, 0.18);
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(15, 23, 42, 0.08);
 }
 
 .song-card {
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
-  gap: 8px;
+  gap: 12px;
   min-height: 0;
   overflow: hidden;
+  scroll-snap-align: start;
 }
 
 .song-card.compact {
-  flex: 0 0 min(400px, calc(100vw - 48px));
-  width: min(400px, calc(100vw - 48px));
-  min-width: min(400px, calc(100vw - 48px));
+  flex: 0 0 min(380px, calc(100vw - 48px));
+  width: min(380px, calc(100vw - 48px));
+  min-width: min(380px, calc(100vw - 48px));
   justify-content: flex-start;
+  transition: transform 180ms ease, box-shadow 180ms ease;
 }
 
 .song-card:not(.compact) {
-  flex: 0 0 min(400px, calc(100vw - 32px));
+  flex: 0 0 min(380px, calc(100vw - 32px));
+}
+
+.song-card.compact:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 7px 18px rgba(15, 23, 42, 0.12);
 }
 
 .song-skeleton,
@@ -203,33 +192,43 @@ a {
   animation: shimmer 1.4s infinite linear;
 }
 
-.song-actions {
+.song-card-header {
+  flex: 0 0 32px;
+  min-width: 0;
   display: flex;
   align-items: center;
-  justify-content: center;
-  gap: 20px;
-  min-height: 30px;
+  justify-content: space-between;
+  gap: 12px;
 }
 
-.song-card.compact .song-actions {
+.song-card-header h2 {
+  min-width: 0;
+  margin: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-family: inherit;
+  font-size: 15px;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.song-actions {
   flex: 0 0 auto;
-  min-height: 30px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
 }
 
 .song-icon {
-  width: 34px;
-  height: 30px;
+  width: 32px;
+  height: 32px;
   display: inline-grid;
   place-items: center;
   border: 0;
   background: transparent;
   text-decoration: none;
   cursor: pointer;
-}
-
-.song-card.compact .song-icon {
-  width: 34px;
-  height: 30px;
 }
 
 .generation-panel {
@@ -799,7 +798,7 @@ a {
   min-height: 0;
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 10px;
   overflow: hidden;
 }
 
@@ -808,7 +807,7 @@ a {
   min-height: 0;
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: 8px;
   overflow: hidden;
 }
 
@@ -843,8 +842,8 @@ a {
 }
 
 .abcjs-audio-shell {
-  flex: 0 0 auto;
-  min-height: 34px;
+  flex: 0 0 38px;
+  min-height: 38px;
   overflow: hidden;
 }
 
@@ -876,18 +875,18 @@ a {
 }
 
 .compact-player .abcjs-audio {
-  flex: 0 0 34px;
+  flex: 0 0 38px;
   min-width: 0;
   overflow: hidden;
 }
 
 .compact-player .abcjs-audio-shell {
-  min-height: 34px;
+  min-height: 38px;
 }
 
 .compact-player .abcjs-inline-audio {
   width: 100%;
-  height: 34px;
+  height: 38px;
   min-width: 0;
   overflow: hidden;
   padding: 0;
@@ -1052,6 +1051,16 @@ a {
   }
 }
 
+@media (prefers-reduced-motion: reduce) {
+  .song-card.compact {
+    transition: none;
+  }
+
+  .song-card.compact:hover {
+    transform: none;
+  }
+}
+
 @media (max-width: 640px) {
   .topbar-inner {
     align-items: center;
@@ -1097,7 +1106,7 @@ a {
 
   .song-card,
   .song-skeleton {
-    margin: 8px;
+    margin: 4px;
   }
 
   .rail-scroll {
@@ -1106,8 +1115,8 @@ a {
   }
 
   .song-card.compact {
-    flex-basis: min(360px, calc(100vw - 40px));
-    width: min(360px, calc(100vw - 40px));
-    min-width: min(360px, calc(100vw - 40px));
+    flex-basis: min(350px, calc(100vw - 40px));
+    width: min(350px, calc(100vw - 40px));
+    min-width: min(350px, calc(100vw - 40px));
   }
 }

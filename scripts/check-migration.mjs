@@ -234,6 +234,12 @@ function checkRepoInvariants() {
       app.includes('aria-label="Composition model"'),
     "composer UI exposes the Sol and Opus selector accessibly",
   );
+  assert(
+    app.includes('<span className="brand-name">SongGPT</span>') &&
+      !app.includes("SongGPT.xyz") &&
+      !app.includes("<Info"),
+    "header uses the clean SongGPT brand without the info control",
+  );
 
   assertTrackedAndNotIgnored("front-end/src/data/defaultSystemMessage.js");
   assertTrackedAndNotIgnored("front-end/src/data/instruments.js");

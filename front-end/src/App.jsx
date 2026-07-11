@@ -10,7 +10,6 @@ import {
   Download,
   ExternalLink,
   Github,
-  Info,
   LoaderCircle,
   MessageCircle,
   Music2,
@@ -23,16 +22,16 @@ import { defaultSystemMessage } from "./data/defaultSystemMessage.js";
 import { instruments } from "./data/instruments.js";
 
 const palette = [
-  "#F9D71C",
-  "#87CEEB",
-  "#50C878",
-  "#E6E6FA",
-  "#FFE5B4",
-  "#FF7F50",
-  "#98FF98",
-  "#F4C2C2",
-  "#FFA07A",
-  "#C8A2C8",
+  "#F2A08C",
+  "#B8D88C",
+  "#C9B8E8",
+  "#F3D27A",
+  "#A9C9F5",
+  "#E8A6B8",
+  "#A7DCCB",
+  "#F1B27B",
+  "#B7CAE8",
+  "#D8B7DB",
 ];
 
 const placeholders = [
@@ -174,8 +173,6 @@ function App({ screen }) {
 }
 
 function Header() {
-  const [aboutOpen, setAboutOpen] = React.useState(false);
-
   return (
     <header>
       <div className="topbar">
@@ -183,16 +180,8 @@ function Header() {
           <div className="brand-cluster">
             <Link to="/songs/" className="brand" aria-label="SongGPT home">
               <span className="brand-mark" />
-              <span className="brand-name">SongGPT.xyz</span>
+              <span className="brand-name">SongGPT</span>
             </Link>
-            <button
-              className="icon-chip"
-              type="button"
-              aria-label="What is SongGPT?"
-              onClick={() => setAboutOpen(true)}
-            >
-              <Info size={15} />
-            </button>
           </div>
           <a
             className="github-button"
@@ -205,19 +194,6 @@ function Header() {
           </a>
         </div>
       </div>
-      <div className="notice">
-        <div className="topbar-inner">
-          If you're having trouble with audio playback on your mobile device,
-          try flipping the ringer switch to make sure it's not muted.
-        </div>
-      </div>
-      <Modal open={aboutOpen} onClose={() => setAboutOpen(false)} title="What is songGPT?">
-        <p>
-          SongGPT is an experimental open-source project that explores the
-          potential of Language Models in generating original and customizable
-          musical compositions. You can read more about it on our GitHub page.
-        </p>
-      </Modal>
     </header>
   );
 }
@@ -564,7 +540,10 @@ function SongCard({ song, compact = false }) {
   const [downloadOpen, setDownloadOpen] = React.useState(false);
   const background = songBackground(song);
   const foreground = getComplementaryColor(background);
-  const abc = song?.abc?.replace(/(%%MIDI program)\s+\d+\s+(\d+)/g, "$1 $2");
+  const title = song?.abc?.match(/^T:\s*(.+)$/m)?.[1]?.trim() || "Untitled";
+  const abc = song?.abc
+    ?.replace(/^T:.*(?:\r?\n)?/gm, "")
+    .replace(/(%%MIDI program)\s+\d+\s+(\d+)/g, "$1 $2");
 
   if (song.status !== "complete") {
     return (
@@ -579,37 +558,40 @@ function SongCard({ song, compact = false }) {
       className={`song-card ${compact ? "compact" : ""}`}
       style={{ backgroundColor: background, color: foreground }}
     >
-      <div className="song-actions">
-        <Link
-          className="song-icon"
-          to={`/songs/${song.id}/`}
-          style={{ color: foreground }}
-          aria-label="Open song"
-        >
-          <ExternalLink size={22} />
-        </Link>
-        <div className="download-wrap">
+      <header className="song-card-header">
+        <h2 title={title}>{title}</h2>
+        <div className="song-actions">
+          <Link
+            className="song-icon"
+            to={`/songs/${song.id}/`}
+            style={{ color: foreground }}
+            aria-label="Open song"
+          >
+            <ExternalLink size={20} />
+          </Link>
+          <div className="download-wrap">
+            <button
+              className="song-icon"
+              type="button"
+              style={{ color: foreground }}
+              aria-label="Download song files"
+              onClick={() => setDownloadOpen((value) => !value)}
+            >
+              <Download size={20} />
+            </button>
+            {downloadOpen ? <DownloadMenu songID={song.id} /> : null}
+          </div>
           <button
             className="song-icon"
             type="button"
             style={{ color: foreground }}
-            aria-label="Download song files"
-            onClick={() => setDownloadOpen((value) => !value)}
+            aria-label="Open composer response"
+            onClick={() => setResponseOpen(true)}
           >
-            <Download size={22} />
+            <MessageCircle size={20} />
           </button>
-          {downloadOpen ? <DownloadMenu songID={song.id} /> : null}
         </div>
-        <button
-          className="song-icon"
-          type="button"
-          style={{ color: foreground }}
-          aria-label="Open composer response"
-          onClick={() => setResponseOpen(true)}
-        >
-          <MessageCircle size={22} />
-        </button>
-      </div>
+      </header>
       {abc ? <ABCAudioPlayer abc={abc} color={foreground} compact /> : null}
       <Modal
         open={responseOpen}
