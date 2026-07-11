@@ -19,6 +19,13 @@
 
 * {
   box-sizing: border-box;
+  scrollbar-width: none;
+}
+
+*::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+  display: none;
 }
 
 html,
@@ -153,11 +160,6 @@ a {
   overflow-x: auto;
   overflow-y: hidden;
   padding: 4px 24px 18px;
-  scrollbar-width: none;
-}
-
-.rail-scroll::-webkit-scrollbar {
-  display: none;
 }
 
 .song-card,
@@ -817,7 +819,6 @@ a {
   overflow-x: hidden;
   overflow-y: auto;
   overscroll-behavior-y: contain;
-  scrollbar-width: thin;
 }
 
 .compact-player .abcjs-scroll {
