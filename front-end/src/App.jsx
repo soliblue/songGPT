@@ -77,6 +77,23 @@ const composerModels = [
 
 const defaultComposerModel = composerModels[0].value;
 
+const audioPlayers = new Map();
+let activeAudioPlayer = null;
+
+const pauseAudioPlayer = (controller) => {
+  controller.pause();
+  controller.isStarted = false;
+};
+
+const claimAudioPlayback = (playerID) => {
+  activeAudioPlayer = playerID;
+  audioPlayers.forEach((controller, registeredID) => {
+    if (registeredID !== playerID && controller.isStarted) {
+      pauseAudioPlayer(controller);
+    }
+  });
+};
+
 const instrumentDisplayNames = {
   "Yamaha Grand Piano": "Piano",
 };
@@ -780,6 +797,7 @@ function ABCAudioPlayer({ abc, color = "#ffffff", compact = false }) {
   const audioRef = React.useRef(null);
   const hintTimerRef = React.useRef(null);
   const hintShownRef = React.useRef(false);
+  const playerIDRef = React.useRef(Symbol("song-player"));
   const [audioHintVisible, setAudioHintVisible] = React.useState(false);
 
   React.useEffect(() => {
@@ -791,7 +809,23 @@ function ABCAudioPlayer({ abc, color = "#ffffff", compact = false }) {
       add_classes: true,
       responsive: "resize",
     });
+    const playerID = playerIDRef.current;
     const synthController = new ABCJS.synth.SynthController();
+    const play = synthController.play.bind(synthController);
+    synthController.play = () => {
+      const starting = !synthController.isStarted;
+      if (starting) claimAudioPlayback(playerID);
+
+      return play().then((result) => {
+        if (starting && activeAudioPlayer !== playerID) {
+          if (synthController.isStarted) pauseAudioPlayer(synthController);
+        } else if (!starting && activeAudioPlayer === playerID) {
+          activeAudioPlayer = null;
+        }
+        return result;
+      });
+    };
+    audioPlayers.set(playerID, synthController);
     synthController.load(audioRef.current, null, {
       displayPlay: true,
       displayLoop: false,
@@ -840,6 +874,9 @@ function ABCAudioPlayer({ abc, color = "#ffffff", compact = false }) {
       removeWaveform();
       window.clearTimeout(hintTimerRef.current);
       audioRef.current?.removeEventListener("click", handlePlaybackRequest, true);
+      if (activeAudioPlayer === playerID) activeAudioPlayer = null;
+      audioPlayers.delete(playerID);
+      synthController.destroy();
       notationRef.current && (notationRef.current.innerHTML = "");
       audioRef.current && (audioRef.current.innerHTML = "");
     };
