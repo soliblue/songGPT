@@ -240,6 +240,18 @@ function checkRepoInvariants() {
       !app.includes("<Info"),
     "header uses the clean SongGPT brand without the info control",
   );
+  assert(
+    app.includes("abcjs-waveform") &&
+      app.includes("MutationObserver") &&
+      app.includes('displayRestart: false') &&
+      app.includes('className="instrument-picker"') &&
+      app.includes('className="instrument-add"'),
+    "audio waveform and icon instrument picker are wired to real controls",
+  );
+  assert(
+    !dependencyNames.includes("react-select"),
+    "frontend no longer ships the generic react-select dependency",
+  );
 
   assertTrackedAndNotIgnored("front-end/src/data/defaultSystemMessage.js");
   assertTrackedAndNotIgnored("front-end/src/data/instruments.js");

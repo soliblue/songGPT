@@ -1,6 +1,5 @@
 import React from "react";
 import ABCJS from "abcjs";
-import Select from "react-select";
 import { HexColorPicker } from "react-colorful";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { Link, useNavigate, useParams } from "react-router-dom";
@@ -10,11 +9,15 @@ import {
   Download,
   ExternalLink,
   Github,
+  Guitar,
   LoaderCircle,
   MessageCircle,
   Music2,
   Palette,
+  Piano,
+  Plus,
   Settings,
+  Wind,
   X,
 } from "lucide-react";
 import { createSong, getSong, listSongs, songFileURL } from "./api.js";
@@ -54,9 +57,6 @@ const defaultInstruments = [
   { name: "Cello", channel: 42 },
   { name: "Harp", channel: 46 },
   { name: "Clarinet", channel: 71 },
-  { name: "Alto Sax", channel: 65 },
-  { name: "Oboe", channel: 68 },
-  { name: "Flute", channel: 73 },
 ];
 
 const generationSteps = ["Queued", "Composing", "Rendering", "Ready"];
@@ -75,6 +75,57 @@ const composerModels = [
 ];
 
 const defaultComposerModel = composerModels[0].value;
+
+const instrumentDisplayNames = {
+  "Yamaha Grand Piano": "Piano",
+};
+
+const waveformHeights = [
+  34, 58, 76, 46, 88, 62, 42, 72, 96, 54, 82, 38,
+  68, 90, 48, 74, 56, 86, 44, 70, 92, 52, 78, 36,
+];
+
+const instrumentIcon = (channel) => {
+  if (channel === 0 || channel === 2) return Piano;
+  if (channel === 40 || channel === 42) return Guitar;
+  if ([65, 68, 71, 73].includes(channel)) return Wind;
+  return Music2;
+};
+
+const decorateWaveform = (audioElement) => {
+  const track = audioElement.querySelector(".abcjs-midi-progress-background");
+  const indicator = track?.querySelector(".abcjs-midi-progress-indicator");
+  if (!track || !indicator) return () => {};
+
+  const waveform = document.createElement("span");
+  waveform.className = "abcjs-waveform";
+  waveform.setAttribute("aria-hidden", "true");
+  const bars = waveformHeights.map((height, index) => {
+    const bar = document.createElement("i");
+    bar.style.setProperty("--wave-height", `${height}%`);
+    bar.style.setProperty("--wave-delay", `${index * -28}ms`);
+    return bar;
+  });
+  waveform.replaceChildren(...bars);
+  track.appendChild(waveform);
+
+  let lastPlayed = -1;
+  const update = () => {
+    const inlineLeft = indicator.style.left || "0%";
+    const ratio = inlineLeft.endsWith("%")
+      ? Number.parseFloat(inlineLeft) / 100
+      : indicator.offsetLeft / Math.max(track.clientWidth, 1);
+    const played = Math.round(Math.min(1, Math.max(0, ratio || 0)) * bars.length);
+    if (played === lastPlayed) return;
+    lastPlayed = played;
+    bars.forEach((bar, index) => bar.classList.toggle("played", index < played));
+  };
+
+  const observer = new MutationObserver(update);
+  observer.observe(indicator, { attributes: true, attributeFilter: ["style"] });
+  update();
+  return () => observer.disconnect();
+};
 
 const hashIndex = (value = "") =>
   [...value].reduce((total, char) => total + char.charCodeAt(0), 0) % palette.length;
@@ -410,88 +461,121 @@ function ModelSelector({ value, onChange, style }) {
   );
 }
 
-function InstrumentList({ systemMessage, setSystemMessage }) {
+function InstrumentList({ setSystemMessage }) {
   const [selectedInstruments, setSelectedInstruments] =
     React.useState(defaultInstruments);
+  const [addOpen, setAddOpen] = React.useState(false);
+  const pickerRef = React.useRef(null);
 
-  const options = React.useMemo(
-    () =>
-      instruments.map((instrument) => ({
-        value: instrument.name,
-        label: instrument.name,
-        channel: instrument.channel,
-      })),
-    [],
+  const availableInstruments = React.useMemo(
+    () => {
+      const selectedChannels = new Set(
+        selectedInstruments.map((instrument) => instrument.channel),
+      );
+      return instruments.filter(
+        (instrument) => !selectedChannels.has(instrument.channel),
+      );
+    },
+    [selectedInstruments],
   );
 
   React.useEffect(() => {
     const instrumentText = selectedInstruments
       .map((instrument) => `${instrument.name} (${instrument.channel})`)
       .join(", ");
-    setSystemMessage(
-      systemMessage.replace(/Instruments:[^.]*\./, `Instruments: ${instrumentText}.`),
+    setSystemMessage((currentMessage) =>
+      currentMessage.replace(
+        /Instruments:[^.]*\./,
+        `Instruments: ${instrumentText}.`,
+      ),
     );
-  }, [selectedInstruments]);
+  }, [selectedInstruments, setSystemMessage]);
+
+  React.useEffect(() => {
+    if (!addOpen) return undefined;
+    const closeOnPointerDown = (event) => {
+      if (!pickerRef.current?.contains(event.target)) setAddOpen(false);
+    };
+    const closeOnEscape = (event) => {
+      if (event.key === "Escape") setAddOpen(false);
+    };
+    window.addEventListener("pointerdown", closeOnPointerDown);
+    window.addEventListener("keydown", closeOnEscape);
+    return () => {
+      window.removeEventListener("pointerdown", closeOnPointerDown);
+      window.removeEventListener("keydown", closeOnEscape);
+    };
+  }, [addOpen]);
+
+  const removeInstrument = (channel) => {
+    setSelectedInstruments((current) =>
+      current.length > 1
+        ? current.filter((instrument) => instrument.channel !== channel)
+        : current,
+    );
+  };
+
+  const addInstrument = (instrument) => {
+    setSelectedInstruments((current) => [...current, instrument]);
+    setAddOpen(false);
+  };
 
   return (
-    <Select
-      className="instrument-select"
-      classNamePrefix="instrument"
-      isMulti
-      isClearable={false}
-      options={options}
-      value={selectedInstruments.map((instrument) => ({
-        value: instrument.name,
-        label: instrument.name,
-        channel: instrument.channel,
-      }))}
-      onChange={(selected) => {
-        if (selected?.length) {
-          setSelectedInstruments(
-            selected.map((option) => ({
-              name: option.value,
-              channel: option.channel,
-            })),
+    <div ref={pickerRef} className="instrument-picker">
+      <div className="instrument-picker-scroll" aria-label="Selected instruments">
+        {selectedInstruments.map((instrument) => {
+          const InstrumentIcon = instrumentIcon(instrument.channel);
+          const displayName = instrumentDisplayNames[instrument.name] || instrument.name;
+          const onlyInstrument = selectedInstruments.length === 1;
+          return (
+            <button
+              key={instrument.channel}
+              className="instrument-chip"
+              type="button"
+              disabled={onlyInstrument}
+              aria-label={`Remove ${instrument.name}`}
+              title={onlyInstrument ? "At least one instrument is required" : `Remove ${instrument.name}`}
+              onClick={() => removeInstrument(instrument.channel)}
+            >
+              <InstrumentIcon size={17} aria-hidden="true" />
+              <span>{displayName}</span>
+              <X className="instrument-remove" size={12} aria-hidden="true" />
+            </button>
           );
-        }
-      }}
-      placeholder="Select instruments..."
-      styles={{
-        control: (base) => ({
-          ...base,
-          minWidth: 250,
-          borderWidth: 0,
-          boxShadow: "none",
-          backgroundColor: "transparent",
-        }),
-        menu: (base) => ({
-          ...base,
-          zIndex: 20,
-          padding: 5,
-          opacity: 0.96,
-          backdropFilter: "blur(25px)",
-        }),
-        multiValue: (base) => ({
-          ...base,
-          opacity: 0.58,
-          backgroundColor: "#d5dee8",
-        }),
-        multiValueLabel: (base) => ({
-          ...base,
-          padding: 8,
-          color: "#111827",
-        }),
-        multiValueRemove: (base) => ({
-          ...base,
-          cursor: "pointer",
-          color: "#111827",
-          ":hover": {
-            color: "#111827",
-            backgroundColor: "transparent",
-          },
-        }),
-      }}
-    />
+        })}
+      </div>
+      <div className="instrument-add-wrap">
+        <button
+          className="instrument-add"
+          type="button"
+          disabled={!availableInstruments.length}
+          aria-expanded={addOpen}
+          aria-haspopup="menu"
+          onClick={() => setAddOpen((open) => !open)}
+        >
+          <Plus size={16} aria-hidden="true" />
+          <span>Add</span>
+        </button>
+        {addOpen ? (
+          <div className="instrument-menu" role="menu" aria-label="Add instrument">
+            {availableInstruments.map((instrument) => {
+              const InstrumentIcon = instrumentIcon(instrument.channel);
+              return (
+                <button
+                  key={instrument.channel}
+                  type="button"
+                  role="menuitem"
+                  onClick={() => addInstrument(instrument)}
+                >
+                  <InstrumentIcon size={17} aria-hidden="true" />
+                  <span>{instrument.name}</span>
+                </button>
+              );
+            })}
+          </div>
+        ) : null}
+      </div>
+    </div>
   );
 }
 
@@ -691,20 +775,29 @@ function ABCAudioPlayer({ abc, color = "#ffffff", compact = false }) {
     synthController.load(audioRef.current, null, {
       displayPlay: true,
       displayLoop: false,
-      displayRestart: !compact,
+      displayRestart: false,
       displayProgress: true,
-      displayWarp: !compact,
+      displayWarp: false,
     });
     const midiBuffer = new ABCJS.synth.CreateSynth();
+    let disposed = false;
+    let removeWaveform = () => {};
     midiBuffer
       .init({ visualObj: visualObj[0] })
       .then(() => synthController.setTune(visualObj[0], false))
+      .then(() => {
+        if (!disposed && audioRef.current) {
+          removeWaveform = decorateWaveform(audioRef.current);
+        }
+      })
       .catch((error) => console.warn("Audio problem:", error));
     return () => {
+      disposed = true;
+      removeWaveform();
       notationRef.current && (notationRef.current.innerHTML = "");
       audioRef.current && (audioRef.current.innerHTML = "");
     };
-  }, [abc, compact]);
+  }, [abc]);
 
   return (
     <div
