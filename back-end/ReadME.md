@@ -31,7 +31,7 @@ sudo apt-get install abcmidi fluidsynth fluid-soundfont-gm
 ## Run
 
 ```bash
-export CLAUDE_MODEL=sonnet
+export CLAUDE_MODEL=claude-opus-4-8
 export DATABASE_PATH="$PWD/data/songgpt.sqlite3"
 export SONGGPT_STORAGE_DIR="$PWD/data/storage"
 

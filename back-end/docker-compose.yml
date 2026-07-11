@@ -12,6 +12,6 @@ services:
     environment:
       LOGGER: uvicorn
       CLAUDE_BIN: ${CLAUDE_BIN:-claude}
-      CLAUDE_MODEL: ${CLAUDE_MODEL:-sonnet}
+      CLAUDE_MODEL: ${CLAUDE_MODEL:-claude-opus-4-8}
       DATABASE_PATH: /data/songgpt.sqlite3
       SONGGPT_STORAGE_DIR: /data/storage

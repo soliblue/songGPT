@@ -33,7 +33,7 @@ OUTPUT_SCHEMA = {
 class SongGPT:
     def __init__(self):
         self.claude_bin = os.getenv("CLAUDE_BIN", "claude")
-        self.claude_model = os.getenv("CLAUDE_MODEL", "sonnet")
+        self.claude_model = os.getenv("CLAUDE_MODEL", "claude-opus-4-8")
         self.timeout = int(os.getenv("GENERATOR_TIMEOUT_SECONDS", "240"))
 
     def generate_abc(
